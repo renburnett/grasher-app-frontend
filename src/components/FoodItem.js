@@ -22,4 +22,4 @@ class FoodItem extends Component {
   }
 }
 
-export default FoodItem
+export default FoodItem;
