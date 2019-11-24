@@ -3,10 +3,30 @@ import FoodItem from '../components/FoodItem';
 import { Image, Header, Card, Grid } from 'semantic-ui-react';
 import open_fridge from '../images/open_fridge.png';
 
-class Fridge extends Component {
+class FridgeDetail extends Component {
+
+  state = {
+    currentFridge: {
+      name: '',
+      drink_capacity: 0,
+      food_capacity: 0,
+      total_items_value: 0,
+      food_items: [],
+      },
+  }
+
+  getDerivedStateFromProps(props, state) {
+    //COMPONENT DID MOUNT ??????????
+    //set currentFridge according to url param
+    return {currentFridge: this.props.fridges.find(fridge => fridge.id === this.props.match.params.id)}
+  }
+
+
 
   displayFoodItems = () => {
-    return this.props.currentFridge.food_items.map((foodItem, id) => {
+    console.log('state', this.state)
+
+    return this.state.currentFridge.food_items.map((foodItem, id) => {
       return <FoodItem foodItem={foodItem} key={id} />
     })
   }
@@ -16,11 +36,11 @@ class Fridge extends Component {
       <Card>
         <Image src={open_fridge} wrapped ui={false} />
         <Card.Content>
-          <Card.Header>{ console.log(this.props.currentFridge) }</Card.Header>
+          <Card.Header>{ console.log(".", this.state.currentFridge) }</Card.Header>
           <Card.Description>
             Graphs for: 
-            <span>how full fridge is drinks: { console.log(this.props) }</span>
-            <span>how full fridge is food: { console.log(this.props) }</span>
+            <span>how full fridge is drinks: {  }</span>
+            <span>how full fridge is food: {  }</span>
             <span>food that will be bad in 48hrs</span>
           </Card.Description>
         </Card.Content>
@@ -32,7 +52,6 @@ class Fridge extends Component {
   }
 
   render() {
-    this.props.setCurrentFridge(this.props)
     return (
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: '100vh'}}>
@@ -48,4 +67,4 @@ class Fridge extends Component {
   }
 }
 
-export default Fridge;
+export default FridgeDetail;

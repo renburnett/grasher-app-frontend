@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import Fridge from '../components/Fridge';
 import { Header, Grid, Card } from 'semantic-ui-react'
-import { Redirect } from 'react-router-dom';
 
 class FridgesContainer extends Component {
 
   displayFridges = () => {
     return this.props.fridges.map((fridge) => {
-      return <Fridge fridge={fridge} key={fridge.id} />
+      return <Fridge fridge={fridge} setCurrentFridge={this.props.setCurrentFridge} key={fridge.id} />
     })
   }
 
