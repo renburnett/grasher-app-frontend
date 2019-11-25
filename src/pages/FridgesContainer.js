@@ -5,8 +5,8 @@ import { Header, Grid, Card } from 'semantic-ui-react'
 class FridgesContainer extends Component {
 
   displayFridges = () => {
-    return this.props.fridges.map((fridge) => {
-      return <Fridge fridge={fridge} key={fridge.id} />
+    return this.props.fridges.map((fridge, idx) => {
+      return <Fridge fridge={fridge} key={fridge.id} idx={idx} />
     })
   }
 

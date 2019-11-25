@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Header, Card, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import fridge_icon from '../images/fridge_icon.svg';
+import fridge_icon1 from '../images/fridge_01.svg';
+import fridge_icon2 from '../images/fridge_02.svg';
+import fridge_icon3 from '../images/fridge_03.svg';
 
 class Fridge extends Component {
   
@@ -14,6 +16,16 @@ class Fridge extends Component {
     // TODO: display chart of fridge FULL-ness and percentage of food about to go bad 
   }
 
+  shuffleIcon = () => {
+    if (this.props.idx % 3 === 0) {
+      return <Image size="medium" src={fridge_icon1}/>
+    } else if (this.props.idx % 3 === 1) {
+      return <Image size="medium" src={fridge_icon2}/>
+    } else if (this.props.idx % 3 === 2) {
+      return <Image size="medium" src={fridge_icon3}/>
+    }
+  }
+
   render() {
     const { fridge } = this.props;
 
@@ -24,7 +36,9 @@ class Fridge extends Component {
       >
         <Card.Content>
           <Header as='h2' color='teal'>{fridge.name}</Header>
-          <Image size="small" src={fridge_icon}/>
+          
+          { this.shuffleIcon()}
+
           <Card.Description>
 
           </Card.Description>

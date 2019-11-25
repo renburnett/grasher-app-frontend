@@ -39,7 +39,6 @@ class FridgeDetail extends Component {
   }
   
   displayFridge = () => {
-
     return (
       <Card>
         <Image src={open_fridge} wrapped ui={false} />
@@ -62,12 +61,12 @@ class FridgeDetail extends Component {
   render() {
     return (
       <Grid centered textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: '35vh'}}>
-          <Card.Group >
+        <Grid.Column style={{ maxWidth: '100vh'}}>
+          <Card.Group centered>
             {this.displayFridge()}
           </Card.Group>
-          <Card.Group>
-            {this.displayFoodItems()}
+          <Card.Group centered>
+          {this.displayFoodItems()}
           </Card.Group>
         </Grid.Column>
       </Grid>

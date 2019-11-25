@@ -25,7 +25,8 @@ class FoodItem extends Component {
             { foodItem.name }
             </Card.Header>
           <Card.Description>
-            Expiration Date: {moment(foodItem.expiration_date).format('LLLL')}
+            Expiration Date: 
+            {moment(foodItem.expiration_date).format('LLLL')}
           </Card.Description>
         </Card.Content>
       </Card>
