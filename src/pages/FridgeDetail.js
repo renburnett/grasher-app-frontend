@@ -15,13 +15,12 @@ class FridgeDetail extends Component {
       },
   }
 
-  getDerivedStateFromProps(props, state) {
-    //COMPONENT DID MOUNT ??????????
+  componentDidMount() {
     //set currentFridge according to url param
-    return {currentFridge: this.props.fridges.find(fridge => fridge.id === this.props.match.params.id)}
+    //this.setState({currentFridge: this.props.fridges.find(fridge => fridge.id === this.props.match.params.id)})
+    const fridge = this.props.fridges.find(fridge => fridge.id === this.props.match.params.id) 
+    console.log("hey!!!!", fridge)
   }
-
-
 
   displayFoodItems = () => {
     console.log('state', this.state)
@@ -54,7 +53,7 @@ class FridgeDetail extends Component {
   render() {
     return (
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: '100vh'}}>
+        <Grid.Column style={{ maxWidth: '35vh'}}>
           <Grid.Row centered>
             {this.displayFridge()}
           </Grid.Row>
