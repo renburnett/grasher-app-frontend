@@ -9,11 +9,11 @@ class Account extends Component {
 
   render() {
     return (
-      <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: '80vh'}}>
 
           <Form size='large'>
-            <Segment stackable>
+            <Segment>
               <Header as='h2' color='blue' textAlign='left'>
                 Change Account Info
               </Header>

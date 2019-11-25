@@ -1,25 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
-import Fridge from './pages/Fridge';
+import FridgeDetail from './pages/FridgeDetail';
 import Account from './pages/Account';
 import FridgesContainer from './pages/FridgesContainer';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import Signup from './components/Signup';
+import URLS from './constants';
 
-function App() {
 
-  return (
-    <div className="App">
-      <Router>
-        <Navbar />
-        <Route path='/login' render={() => <Login /> }/>
-        <Route path='/account' component={() => <Account />}/>
-        <Route exact path='/' render={ () => <FridgesContainer /> }/>
-        <Route path='/fridges' render={ () => <FridgesContainer /> }/>
-        <Route path='/fridges/:id' render={ () => <Fridge /> }/>
-      </Router>
-    </div>
-  );
+class App extends Component {
+
+  state = {
+    fridges: [],
+  }
+
+  componentDidMount() {
+    fetch(URLS.FRIDGES)
+    .then(res => res.json())
+    .then(fridges => {
+      this.setState({fridges: fridges})
+      //TODO: ONLY GET INDIVIDUAL USERS FRIDGES
+    })
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+        <Router>
+          <Navbar />
+          <Route path='/login' render={ () => <Login /> }/>
+          <Route path='/account' component={ () => <Account /> }/>
+          <Route path='/signup' component={ () => <Signup /> }/>
+          <Route exact path='/' render={ () => <FridgesContainer fridges={this.state.fridges} /> }/>
+          <Route exact path='/fridges' render={ () => <FridgesContainer fridges={this.state.fridges} /> }/>
+          <Route path='/fridges/:id' render={ props => <FridgeDetail {...props} fridges={this.state.fridges} /> }/>
+        </Router>
+      </div>
+    )  
+  }
 }
 
 export default App;
