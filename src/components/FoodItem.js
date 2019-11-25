@@ -16,14 +16,16 @@ class FoodItem extends Component {
     return (
       <Card>
         <Card.Content>
-          <Icon
-            floated='left'
-            size='mini'
-            name='food'
-          />
-          <Card.Header>{ foodItem.name }</Card.Header>
+          <Card.Header>
+            <Icon
+              floated='left'
+              size='large'
+              name='food'
+            />
+            { foodItem.name }
+            </Card.Header>
           <Card.Description>
-            Expiration Date: {moment(foodItem.expiration_date).format("dddd, MMMM Do YYYY")}
+            Expiration Date: {moment(foodItem.expiration_date).format('LLLL')}
           </Card.Description>
         </Card.Content>
       </Card>
