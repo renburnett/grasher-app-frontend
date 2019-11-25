@@ -12,35 +12,52 @@ class FridgeDetail extends Component {
       food_capacity: 0,
       total_items_value: 0,
       food_items: [],
-      },
+      }
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    const emptyFridge = {
+      name: '',
+      drink_capacity: 0,
+      food_capacity: 0,
+      total_items_value: 0,
+      food_items: [],
+      }
+
+      console.log('next props', nextProps)
+
+    if (nextProps.fridges.length > 0) {
+      return {currentFridge: nextProps.fridges.find(fridge => fridge.id === Number(nextProps.match.params.id))}
+    } else {
+      return { currentFridge: emptyFridge }
+    }
+
   }
 
   componentDidMount() {
     //set currentFridge according to url param
-    //this.setState({currentFridge: this.props.fridges.find(fridge => fridge.id === this.props.match.params.id)})
-    const fridge = this.props.fridges.find(fridge => fridge.id === this.props.match.params.id) 
-    console.log("hey!!!!", fridge)
+    console.log("comp didmount", this.props.fridges)
+    
   }
 
   displayFoodItems = () => {
-    console.log('state', this.state)
-
     return this.state.currentFridge.food_items.map((foodItem, id) => {
       return <FoodItem foodItem={foodItem} key={id} />
     })
   }
   
   displayFridge = () => {
+
     return (
       <Card>
         <Image src={open_fridge} wrapped ui={false} />
         <Card.Content>
-          <Card.Header>{ console.log(".", this.state.currentFridge) }</Card.Header>
+          <Card.Header>{ this.state.currentFridge.name }</Card.Header>
           <Card.Description>
             Graphs for: 
-            <span>how full fridge is drinks: {  }</span>
-            <span>how full fridge is food: {  }</span>
-            <span>food that will be bad in 48hrs</span>
+            <p>how full fridge is drinks: {  }</p>
+            <p>how full fridge is food: { this.state.currentFridge.food_items.length }</p>
+            <p>food that will be bad in 48hrs</p>
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
@@ -51,14 +68,17 @@ class FridgeDetail extends Component {
   }
 
   render() {
+    //const fridge = this.props.fridges.find(fridge => fridge.id === Number(this.props.match.params.id))
+    console.log('render func', this.props.fridges)
     return (
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: '35vh'}}>
           <Grid.Row centered>
+            {/* {this.props.fridges.length > 0 ? this.displayFridge() : null} */}
             {this.displayFridge()}
           </Grid.Row>
           <Card.Group centered>
-            {this.displayFoodItems()}
+            {/* this.displayFoodItems() */}
           </Card.Group>
         </Grid.Column>
       </Grid>
