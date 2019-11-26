@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
-import { Image, Icon, Card, Grid, Button } from 'semantic-ui-react';
-import { VictoryBar, VictoryChart, VictoryPie, VictoryGroup } from 'victory';
-import open_fridge from '../images/open_fridge.png';
+import FoodDetailsHeader from '../components/FoodDetailsHeader';
+import { Card, Grid, Divider } from 'semantic-ui-react';
+import { VictoryBar, VictoryChart, VictoryPie } from 'victory';
 import CONSTANTS from '../constants';
-const moment = require('moment');
 
 class FridgeDetail extends Component {
   state = {
@@ -38,37 +37,15 @@ class FridgeDetail extends Component {
       return <FoodItem foodItem={foodItem} key={id} />
     })
   }
-  
+
   displayFridge = () => {
     return (
     <>
-      <Card style={{minWidth: '39%'}}>
-        <Image src={open_fridge} wrapped ui={false} />
-        <Card.Content>
-          <Card.Header>{ this.state.currentFridge.name }</Card.Header>
-          <Card.Description>
-            <p>Location: TODO: hook this up</p>
-            <p>Drink Capacity: { this.state.currentFridge.drink_capacity }</p>
-            <p>Food Capacity: { this.state.currentFridge.food_capacity }</p>
-            <p>Food Expiring in less than 48hrs: {}</p>
-            <br/>
-            <p>Fetch recipes for food near it's expiration date:</p>
-            <Button animated>
-              <Button.Content visible> Next </Button.Content>
-              <Button.Content hidden>
-                <Icon name='arrow right' />
-              </Button.Content>
-            </Button>
-
-          </Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-          {moment().format('LLLL')}
-        </Card.Content>
-      </Card>
+      <FoodDetailsHeader currentFridge={this.state.currentFridge}/>
       <Card style={{minWidth: '50%'}}>
-      <Card.Content header="Breakdown of Consumables"/>
         <Card.Content>
+          <Card.Header>Breakdown of Consumables</Card.Header>
+          <Divider />
           <div>
             <VictoryChart domainPadding={30}>
               <VictoryBar
@@ -80,7 +57,8 @@ class FridgeDetail extends Component {
                   { x: "beer", y: 12000 },
                 ]}
               />
-              </VictoryChart> 
+            </VictoryChart>
+            <Divider />
             <VictoryPie
                 colorScale={CONSTANTS.randomColors(5)}
                 style={{ labels: { fontSize: 14 } }}
