@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
-import { Image, Header, Card, Grid } from 'semantic-ui-react';
+import { Image, Icon, Card, Grid, Button } from 'semantic-ui-react';
+import { VictoryBar, VictoryChart, VictoryPie, VictoryGroup } from 'victory';
 import open_fridge from '../images/open_fridge.png';
+import CONSTANTS from '../constants';
+const moment = require('moment');
 
 class FridgeDetail extends Component {
-
   state = {
     currentFridge: {
       name: '',
@@ -29,7 +31,6 @@ class FridgeDetail extends Component {
     } else {
       return { currentFridge: emptyFridge }
     }
-
   }
 
   displayFoodItems = () => {
@@ -40,21 +41,62 @@ class FridgeDetail extends Component {
   
   displayFridge = () => {
     return (
-      <Card>
+    <>
+      <Card style={{minWidth: '39%'}}>
         <Image src={open_fridge} wrapped ui={false} />
         <Card.Content>
           <Card.Header>{ this.state.currentFridge.name }</Card.Header>
           <Card.Description>
-            Graphs for: 
-            <p>how full fridge is drinks: { this.state.currentFridge.food_items.length }</p>
-            <p>how full fridge is food: { this.state.currentFridge.food_items.length }</p>
-            <p>food that will be bad in 48hrs</p>
+            <p>Location: TODO: hook this up</p>
+            <p>Drink Capacity: { this.state.currentFridge.drink_capacity }</p>
+            <p>Food Capacity: { this.state.currentFridge.food_capacity }</p>
+            <p>Food Expiring in less than 48hrs: {}</p>
+            <br/>
+            <p>Fetch recipes for food near it's expiration date:</p>
+            <Button animated>
+              <Button.Content visible> Next </Button.Content>
+              <Button.Content hidden>
+                <Icon name='arrow right' />
+              </Button.Content>
+            </Button>
+
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
-          extra content
+          {moment().format('LLLL')}
         </Card.Content>
       </Card>
+      <Card style={{minWidth: '50%'}}>
+      <Card.Content header="Breakdown of Consumables"/>
+        <Card.Content>
+          <div>
+            <VictoryChart domainPadding={30}>
+              <VictoryBar
+                animate={{ onLoad: { duration: 1000 } }}
+                style={{ data: { fill: "#6DB65B" }, labels: { fontSize: 16 } }}
+                data={[
+                  { x: "chips", y: 1234 },
+                  { x: "meat", y: 10000 },
+                  { x: "beer", y: 12000 },
+                ]}
+              />
+              </VictoryChart> 
+            <VictoryPie
+                colorScale={CONSTANTS.randomColors(5)}
+                style={{ labels: { fontSize: 14 } }}
+                innerRadius={75}
+                data={[
+                  { x: "bread", y: 20 },
+                  { x: "pears", y: 20 },
+                  { x: "apples", y: 20 },
+                  { x: "beer", y: 20 },
+                  { x: "lunchable", y: 20 }
+                ]}
+            />
+          </div>
+        </Card.Content>
+      </Card>
+    </>
     )
   }
 
