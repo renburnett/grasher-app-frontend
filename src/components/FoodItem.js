@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon } from 'semantic-ui-react';
+import { Card, Icon, Divider } from 'semantic-ui-react';
 const moment = require('moment');
 
 class FoodItem extends Component {
@@ -23,7 +23,8 @@ class FoodItem extends Component {
               name='food'
             />
             { foodItem.name }
-            </Card.Header>
+          </Card.Header>
+          <Divider />
           <Card.Description>
             <p> Expiration Date: </p> 
             {moment(foodItem.expiration_date).format('LLLL')}
