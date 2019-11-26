@@ -1,7 +1,27 @@
-const URLS = {
-  USERS: "http://localhost:3000/users",
-  FRIDGES:"http://localhost:3000/fridges",
-  FOOD_ITEMS: "http://localhost:3000/food_items",
+
+const CONSTANTS = {
+  USERS_URL: "http://localhost:3000/users",
+  FRIDGES_URL:"http://localhost:3000/fridges",
+  FOOD_ITEMS_URL: "http://localhost:3000/food_items",
+  randomColors:  (num) => {
+    const arr = ["#FFC103", "#FF5331", "#007AD9", "#0BE7D7", "#EE3B95", "#14CE2A", "#CD1DEE"]
+    const arrCopy = [...arr]
+    const return_arr = []
+  
+    if (num > arr.length)
+      num = arr.length
+    let i = 0;
+  
+    while (i < num) {
+      let randIdx = Math.floor(Math.random() * arr.length)
+      if (arrCopy[randIdx] !== null) {
+        return_arr.push(arrCopy[randIdx])
+        arrCopy[randIdx] = null
+        i++;
+        }
+      }
+    return return_arr
+  },
 }
 
-export default URLS;
+export default CONSTANTS;

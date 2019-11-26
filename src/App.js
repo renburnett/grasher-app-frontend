@@ -6,8 +6,7 @@ import FridgeDetail from './pages/FridgeDetail';
 import Account from './pages/Account';
 import FridgesContainer from './pages/FridgesContainer';
 import Signup from './components/Signup';
-import URLS from './constants';
-
+import CONSTANTS from './constants';
 
 class App extends Component {
 
@@ -16,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch(URLS.FRIDGES)
+    fetch(CONSTANTS.FRIDGES_URL)
     .then(res => res.json())
     .then(fridges => {
       this.setState({fridges: fridges})
@@ -25,7 +24,6 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <div className="App">
         <Router>
