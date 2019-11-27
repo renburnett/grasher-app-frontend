@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
+import { Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
 class Login extends Component {
-  
-  state = {
-    loggedIn: false,
-    currentUser: null
-  }
 
-  componentDidMount() {
-    //TODO: refactor to pull GRID out of login AND FridgesContainer?
-  }
+  // componentDidUpdate() {
+  //   //TODO: refactor to pull GRID out of login AND FridgesContainer?
+  // }
 
   render() {
+    if (this.props.loggedIn === true) {
+      this.props.history.push('/');
+    }
     return (
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: '80vh'}}>
-
-          <Form size='large'>
+        <Grid.Column style={{ maxWidth: '75vh'}}>
+          <Form onSubmit={this.props.handleLoginSubmit} size='large'>
             <Segment>
               <Header as='h1' color='blue' textAlign='left'>
                 Grasher
@@ -27,17 +24,25 @@ class Login extends Component {
                 </Header.Subheader>
               </Header>
 
-              <Form.Input fluid icon='user' iconPosition='left' placeholder='maria@nw_harvest.org' />
+              <Form.Input 
+                value={this.props.email}
+                fluid 
+                icon='user' 
+                iconPosition='left'
+                placeholder='maria@nw_harvest.org'
+                name="email"
+                onChange={this.props.handleChange}
+              />
               <Form.Input
+                value={this.props.password}
                 fluid
                 icon='lock'
                 iconPosition='left'
                 placeholder='password'
-                type='password'
+                name='password'
+                onChange={this.props.handleChange}
               />
-              <Button color='teal' fluid size='large'>
-                Login
-              </Button>
+              <Form.Button type="submit" content='Submit' color='teal' fluid size='large' />
               <Message>
                 Never been here before? <Link to="/signup">Sign Up!</Link>
               </Message>

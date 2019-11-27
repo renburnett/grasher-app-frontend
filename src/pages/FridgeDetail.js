@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
+import SecurityHOC from '../HOCs/SecurityHOC';
 import FoodDetailsHeader from '../components/FoodDetailsHeader';
-import { Card, Grid, Divider } from 'semantic-ui-react';
+import { Card, Grid, Divider, Button, Icon } from 'semantic-ui-react';
 import { VictoryBar, VictoryChart, VictoryPie } from 'victory';
 import CONSTANTS from '../constants';
 
@@ -72,7 +73,22 @@ class FridgeDetail extends Component {
                 ]}
             />
           </div>
+          <Divider />
+          <p>Drink Capacity: { this.state.currentFridge.drink_capacity }</p>
+          <p>Food Capacity: { this.state.currentFridge.food_capacity }</p>
+          <br/>
+          <p>Fetch recipes for food near it's expiration date:</p>
+          {/* <Button type="submit" loading>Loading</Button>  TODO: implement after recipe API fetch */}
+          <Button type="submit" animated>
+            <Button.Content visible> Next </Button.Content>
+            <Button.Content hidden>
+              <Icon name='arrow right' />
+            </Button.Content>
+          </Button>
         </Card.Content>
+        <Card.Content extra>
+        Location: Seattle, WA
+      </Card.Content>
       </Card>
     </>
     )
@@ -94,4 +110,4 @@ class FridgeDetail extends Component {
   }
 }
 
-export default FridgeDetail;
+export default SecurityHOC(FridgeDetail);

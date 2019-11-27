@@ -10,6 +10,9 @@ class Navbar extends Component {
 
   handleNavItemClick = (e, { name }) => {
     this.setState({ activeItem: name })
+    if (name === 'logout') {
+      this.props.handleLogout()
+    }
   }
 
   render() {
@@ -24,7 +27,7 @@ class Navbar extends Component {
           active={activeItem === 'home'}
           onClick={this.handleNavItemClick}
         >
-          <img alt="grasher app icon" src={grash_icon}/>
+          <img alt="grasher app icon" src={grash_icon} />
         </Menu.Item>
         <Menu.Item
           as={Link}
