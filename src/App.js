@@ -72,7 +72,7 @@ class App extends Component {
         })
       } else {
         console.log("Error: User not found")
-        //TODO: add error modal
+        //TODO: add error modalll
       }
     })
   }
