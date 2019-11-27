@@ -1,7 +1,7 @@
 import { Header, Card, Image, Divider, Progress } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
-import ProcessedFoodGraph from '../components/ProcessedFoodGraph';
+import FoodTypesGraph from './FoodTypesGraph';
 import fridge_icon1 from '../images/fridge_01.svg';
 import fridge_icon2 from '../images/fridge_02.svg';
 import fridge_icon3 from '../images/fridge_03.svg';
@@ -32,7 +32,7 @@ class Fridge extends Component {
           </Header>
           <Divider horizontal>fridge contents</Divider>
           <Card.Description>
-            <ProcessedFoodGraph fridge={this.props.fridge}/>
+            <FoodTypesGraph fridge={this.props.fridge}/>
             <Divider horizontal>food within 48hrs of expiring</Divider>
             <br/>
             <Progress percent={44} progress />

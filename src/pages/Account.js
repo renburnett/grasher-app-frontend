@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SecurityHOC from '../HOCs/SecurityHOC';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 
 class Account extends Component {
@@ -37,4 +38,4 @@ class Account extends Component {
   }
 }
 
-export default Account;
+export default SecurityHOC(Account);
