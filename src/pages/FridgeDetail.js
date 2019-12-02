@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
 import SecurityHOC from '../HOCs/SecurityHOC';
-import FoodDetailsHeader from '../components/FoodDetailsHeader';
+import FoodDetailsForm from '../components/FoodDetailsForm';
 import { Card, Grid, Divider, Button, Icon } from 'semantic-ui-react';
 import { VictoryBar, VictoryChart, VictoryPie } from 'victory';
 import CONSTANTS from '../constants';
@@ -27,7 +27,9 @@ class FridgeDetail extends Component {
       }
 
     if (nextProps.fridges.length > 0) {
-      return {currentFridge: nextProps.fridges.find(fridge => fridge.id === Number(nextProps.match.params.id))}
+      const fridgeId = Number(nextProps.match.params.id);
+      localStorage.setItem('currentFridgeId', JSON.stringify(fridgeId))
+      return {currentFridge: nextProps.fridges.find(fridge => fridge.id === fridgeId)}
     } else {
       return { currentFridge: emptyFridge }
     }
@@ -42,7 +44,7 @@ class FridgeDetail extends Component {
   displayFridge = () => {
     return (
     <>
-      <FoodDetailsHeader currentFridge={this.state.currentFridge}/>
+      <FoodDetailsForm fetchUsersFridges={this.props.fetchUsersFridges} currentFridge={this.state.currentFridge}/>
       <Card style={{minWidth: '50%'}}>
         <Card.Content>
           <Card.Header>Breakdown of Consumables</Card.Header>
