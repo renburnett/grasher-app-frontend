@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import FridgeDetail from './pages/FridgeDetail';
@@ -19,18 +19,21 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch(CONSTANTS.FRIDGES_URL)
-    .then(res => res.json())
-    .then(fridges => {
-      this.setState({fridges: fridges})
-      //TODO: ONLY GET INDIVIDUAL USERS FRIDGES
-    })
     this.getUserFromLocalStorage()
+    this.fetchUsersFridges()
   }
 
-  handleChange = (e, val) => {
-    const { name, value } = val;
-    this.setState({ [name]: value })
+  fetchUsersFridges = () => {
+    fetch(CONSTANTS.FRIDGES_URL)
+      .then(res => res.json())
+      .then(fridges => {
+        this.setState(() => {
+          const currentUsersFridges = fridges.filter((fridge) => {
+            return fridge.user_id === this.state.currentUser.id;
+          })
+          return {fridges: currentUsersFridges};
+        })
+    })
   }
 
   setUserToLocalStorage = (user) => {
@@ -52,7 +55,16 @@ class App extends Component {
     if (localStorage.loggedIn) {
       localStorage.removeItem('loggedIn');
     }
+    if (localStorage.fridges) {
+      localStorage.removeItem('fridges');
+    }
     this.setState({loggedIn: false, currentUser: null})
+  }
+
+  //form handlers
+  handleChange = (e, val) => {
+    const { name, value } = val;
+    this.setState({ [name]: value })
   }
 
   handleLoginSubmit = () => {
@@ -71,10 +83,11 @@ class App extends Component {
           }
         })
       } else {
-        console.log("Error: User not found")
-        //TODO: add error modalll
+        console.log("Error: User not found, please sign-up")
+        //TODO: add error modalll!!!!!!
       }
     })
+    .then(this.fetchUsersFridges())
   }
 
   render() {
@@ -89,7 +102,7 @@ class App extends Component {
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleChange={this.handleChange} email={this.state.email} password={this.state.password} loggedIn={loggedIn}/> }/>
           <Route path='/account' component={ () => <Account loggedIn={loggedIn} /> }/>
           <Route path='/signup' component={ () => <Signup /> }/>
-          <Route path='/fridges/:id' render={ props => <FridgeDetail {...props} fridges={fridges} loggedIn={loggedIn} /> }/>
+          <Route path='/fridges/:id' render={ props => <FridgeDetail {...props} fetchUsersFridges={this.fetchUsersFridges} fridges={fridges} loggedIn={loggedIn} /> }/>
         </Router>
       </div>
     )
