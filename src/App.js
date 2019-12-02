@@ -20,7 +20,6 @@ class App extends Component {
 
   componentDidMount() {
     this.getUserFromLocalStorage()
-    this.fetchUsersFridges()
   }
 
   fetchUsersFridges = () => {
@@ -28,10 +27,18 @@ class App extends Component {
       .then(res => res.json())
       .then(fridges => {
         this.setState(() => {
+          let userId = -1;
+          if (this.state.currentUser) {
+            userId = this.state.currentUser.id;
+          } else if (localStorage.currentUser) {
+            userId = JSON.parse(localStorage.currentUser).id
+          } else {
+            console.log('error, user not found')
+          }
           const currentUsersFridges = fridges.filter((fridge) => {
-            return fridge.user_id === this.state.currentUser.id;
+            return fridge.user_id === userId;
           })
-          return {fridges: currentUsersFridges};
+          return { fridges: currentUsersFridges };
         })
     })
   }
@@ -44,7 +51,9 @@ class App extends Component {
   getUserFromLocalStorage = () => {
     if (localStorage.currentUser) {
       const rehydratedUser = JSON.parse(localStorage.currentUser)
-      this.setState({loggedIn: true, currentUser: rehydratedUser})
+      this.setState({loggedIn: true, currentUser: rehydratedUser}, () => {
+        this.fetchUsersFridges()
+      })
     }
   }
 
@@ -57,6 +66,9 @@ class App extends Component {
     }
     if (localStorage.fridges) {
       localStorage.removeItem('fridges');
+    }
+    if (localStorage.currentFridgeId) {
+      localStorage.removeItem('currentFridgeId');
     }
     this.setState({loggedIn: false, currentUser: null})
   }
