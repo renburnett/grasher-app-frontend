@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Divider } from 'semantic-ui-react';
+import { Card, Icon, Divider, Button } from 'semantic-ui-react';
 const moment = require('moment');
 
 class FoodItem extends Component {
@@ -17,12 +17,9 @@ class FoodItem extends Component {
       <Card>
         <Card.Content>
           <Card.Header>
-            <Icon
-              floated='left'
-              size='large'
-              name='food'
-            />
+            <Icon floated='left' size='large' name='food' />
             { foodItem.name }
+            <Button onClick={(e, foodItem) => {this.props.handleFoodItemDelete(e, foodItem)}} floated='right' icon='x' id={foodItem.id} />
           </Card.Header>
           <Divider />
           <Card.Description>

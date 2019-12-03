@@ -31,7 +31,7 @@ class Login extends Component {
                 iconPosition='left'
                 placeholder='maria@nw_harvest.org'
                 name="email"
-                onChange={this.props.handleChange}
+                onChange={this.props.handleLoginChange}
               />
               <Form.Input
                 value={this.props.password}
@@ -40,7 +40,7 @@ class Login extends Component {
                 iconPosition='left'
                 placeholder='password'
                 name='password'
-                onChange={this.props.handleChange}
+                onChange={this.props.handleLoginChange}
               />
               <Form.Button type="submit" content='Submit' color='teal' fluid size='large' />
               <Message>

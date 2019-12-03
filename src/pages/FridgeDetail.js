@@ -1,50 +1,30 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
 import SecurityHOC from '../HOCs/SecurityHOC';
+import FridgeLoadHOC from '../HOCs/FridgeLoadHOC';
 import FoodDetailsForm from '../components/FoodDetailsForm';
 import { Card, Grid, Divider, Button, Icon } from 'semantic-ui-react';
 import { VictoryBar, VictoryChart, VictoryPie } from 'victory';
 import CONSTANTS from '../constants';
 
 class FridgeDetail extends Component {
-  state = {
-    currentFridge: {
-      name: '',
-      drink_capacity: 0,
-      food_capacity: 0,
-      total_items_value: 0,
-      food_items: [],
-      }
-  }
 
-  static getDerivedStateFromProps(nextProps) {
-    const emptyFridge = {
-      name: '',
-      drink_capacity: 0,
-      food_capacity: 0,
-      total_items_value: 0,
-      food_items: [],
-      }
-
-    if (nextProps.fridges.length > 0) {
-      const fridgeId = Number(nextProps.match.params.id);
-      localStorage.setItem('currentFridgeId', JSON.stringify(fridgeId))
-      return {currentFridge: nextProps.fridges.find(fridge => fridge.id === fridgeId)}
-    } else {
-      return { currentFridge: emptyFridge }
-    }
+  componentDidMount() {
+    console.log('fridge detail', this.props.currentFridge)
+    // this.props.setCurrentFridge(this.props.match)
+    this.props.setCurrentFridge(this.props.match.params.fridge_id)
   }
 
   displayFoodItems = () => {
-    return this.state.currentFridge.food_items.map((foodItem, id) => {
-      return <FoodItem foodItem={foodItem} key={id} />
+    return this.props.currentFridge.food_items.map((foodItem, id) => {
+      return <FoodItem handleFoodItemDelete={this.props.handleFoodItemDelete} foodItem={foodItem} key={id} />
     })
   }
 
   displayFridge = () => {
     return (
     <>
-      <FoodDetailsForm fetchUsersFridges={this.props.fetchUsersFridges} currentFridge={this.state.currentFridge}/>
+      <FoodDetailsForm handleFoodFormSubmit={this.props.handleFoodFormSubmit} handleFoodFormChange={this.props.handleFoodFormChange} fetchUsersFridges={this.props.fetchUsersFridges} currentFridge={this.props.currentFridge} />
       <Card style={{minWidth: '50%'}}>
         <Card.Content>
           <Card.Header>Breakdown of Consumables</Card.Header>
@@ -76,8 +56,8 @@ class FridgeDetail extends Component {
             />
           </div>
           <Divider />
-          <p>Drink Capacity: { this.state.currentFridge.drink_capacity }</p>
-          <p>Food Capacity: { this.state.currentFridge.food_capacity }</p>
+          <p>Drink Capacity: { this.props.currentFridge.drink_capacity }</p>
+          <p>Food Capacity: { this.props.currentFridge.food_capacity }</p>
           <br/>
           <p>Fetch recipes for food near it's expiration date:</p>
           {/* <Button type="submit" loading>Loading</Button>  TODO: implement after recipe API fetch */}
@@ -104,7 +84,7 @@ class FridgeDetail extends Component {
             {this.displayFridge()}
           </Card.Group>
           <Card.Group centered>
-          {this.displayFoodItems()}
+            {this.displayFoodItems()}
           </Card.Group>
         </Grid.Column>
       </Grid>
@@ -112,4 +92,14 @@ class FridgeDetail extends Component {
   }
 }
 
-export default SecurityHOC(FridgeDetail);
+FridgeDetail.defaultProps = {
+  currentFridge: {
+    name: '',
+    drink_capacity: 0,
+    food_capacity: 0,
+    total_items_value: 0,
+    food_items: [],
+  }
+}
+
+export default SecurityHOC(FridgeLoadHOC(FridgeDetail));

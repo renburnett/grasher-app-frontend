@@ -8,6 +8,7 @@ import fridge_icon3 from '../images/fridge_03.svg';
 
 class Fridge extends Component {
 
+
   shuffleIcon = () => {
     if (this.props.idx % 3 === 0) {
       return <Image size="big" src={fridge_icon1}/>

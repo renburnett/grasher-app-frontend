@@ -3,6 +3,7 @@ import { VictoryPie } from 'victory';
 import CONSTANTS from '../constants';
 
 class FoodTypesGraph extends Component {
+
   
   state = {
     graphData: [
