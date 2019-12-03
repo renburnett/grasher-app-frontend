@@ -40,22 +40,25 @@ class App extends Component {
     this.getUserFromLocalStorage()
   }
 
-  setCurrentFridge = (props) => {
-    const fridgeId = Number(props.params.fridge_id);
+  setCurrentFridge = (id) => {
     let fridge = null;
-    if (this.state.currentUsersFridges.length < 1) {
-      this.getCurrentFridgesFromLocalStorage()
-      fridge = this.state.currentUsersFridges.find(fridge => fridge.id === fridgeId)
-    } 
-    fridge = this.state.currentUsersFridges.find(fridge => fridge.id === fridgeId)
+    
+    this.state.currentUsersFridges.forEach(fridgeItem => {
+      console.log(fridgeItem)
+      if (fridgeItem.id == id) {
+        fridge = fridgeItem;
+      }
+    })
+
 
     console.log('set current fridge', fridge)
 
     this.setState((prevState) => {
       localStorage.setItem('currentFridge', JSON.stringify(fridge))
-      prevState.currentFridge = fridge;
-      prevState.newFood.fridge_id = fridgeId;
-      return prevState;
+      // prevState.currentFridge = fridge;
+      // prevState.newFood.fridge_id = id;
+      // return prevState;
+      return {currentFridge: fridge}
     })
   }
 
@@ -221,7 +224,7 @@ class App extends Component {
           <Route 
             path='/fridges/:fridge_id' 
             render={ props => {
-              return <FridgeDetail {...props} handleFoodItemDelete={this.handleFoodItemDelete} handleFoodFormSubmit={this.handleFoodFormSubmit} handleFoodFormChange={this.handleFoodFormChange} fetchUsersFridges={this.fetchUsersFridges} currentFridge={this.state.currentFridge} setCurrentFridge={this.setCurrentFridge} loggedIn={loggedIn} />
+              return <FridgeDetail {...props} fridgesReady={this.state.currentUsersFridges.length>0} handleFoodItemDelete={this.handleFoodItemDelete} handleFoodFormSubmit={this.handleFoodFormSubmit} handleFoodFormChange={this.handleFoodFormChange} fetchUsersFridges={this.fetchUsersFridges} currentFridge={this.state.currentFridge} setCurrentFridge={this.setCurrentFridge} loggedIn={loggedIn} />
             } }/>
         </Router>
       </div>

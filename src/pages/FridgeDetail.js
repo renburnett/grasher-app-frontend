@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
 import SecurityHOC from '../HOCs/SecurityHOC';
+import FridgeLoadHOC from '../HOCs/FridgeLoadHOC';
 import FoodDetailsForm from '../components/FoodDetailsForm';
 import { Card, Grid, Divider, Button, Icon } from 'semantic-ui-react';
 import { VictoryBar, VictoryChart, VictoryPie } from 'victory';
@@ -10,7 +11,8 @@ class FridgeDetail extends Component {
 
   componentDidMount() {
     console.log('fridge detail', this.props.currentFridge)
-    this.props.setCurrentFridge(this.props.match)
+    // this.props.setCurrentFridge(this.props.match)
+    this.props.setCurrentFridge(this.props.match.params.fridge_id)
   }
 
   displayFoodItems = () => {
@@ -90,4 +92,14 @@ class FridgeDetail extends Component {
   }
 }
 
-export default SecurityHOC(FridgeDetail);
+FridgeDetail.defaultProps = {
+  currentFridge: {
+    name: '',
+    drink_capacity: 0,
+    food_capacity: 0,
+    total_items_value: 0,
+    food_items: [],
+  }
+}
+
+export default SecurityHOC(FridgeLoadHOC(FridgeDetail));
