@@ -31,7 +31,7 @@ class App extends Component {
       food_type: 'fruit',
       expiration_date: '11/12/2089',
       fridge_id: -1,
-      quantity: 0, // TODO: Add ability to change quantity upon form submit
+      quantity: 0,
     },
   }
   
