@@ -57,6 +57,27 @@ class App extends Component {
     })
   }
 
+  isCurrentFridgeFoodOrDrinkFull = () => {
+    const foodOrDrinkFull = {foodFull: false, drinkFull: false}
+    let totalFood = 0;
+    let totalDrink = 0;
+
+    this.state.currentFridge.food_items.forEach((food) => {
+      if (food.is_drink) {
+        totalDrink += 1;
+      } else if (!food.is_drink) {
+        totalFood += 1;
+      }
+    })
+    if (totalFood >= this.state.currentFridge.food_capacity) {
+      foodOrDrinkFull.foodFull = true;
+    }
+    if (totalDrink >= this.state.currentFridge.drink_capacity) {
+      foodOrDrinkFull.drinkFull = true;
+    }
+    return foodOrDrinkFull;
+  }
+
   fetchUsersFridges = () => {
     fetch(CONSTANTS.FRIDGES_URL)
     .then(res => res.json())
@@ -142,6 +163,8 @@ class App extends Component {
 
   //food item add form handlers
   handleFoodFormSubmit = () => {
+    const isDrinkFull = this.isCurrentFridgeFoodOrDrinkFull().drinkFull;
+    const isFoodFull = this.isCurrentFridgeFoodOrDrinkFull().foodFull;
     const config = {
       method: 'POST',
       headers: {
@@ -151,17 +174,38 @@ class App extends Component {
       body: JSON.stringify(this.state.newFood),
     }
 
-    fetch(CONSTANTS.FOOD_ITEMS_URL, config)
-    .then(res => res.json())
-    .then(foodItem => this.addFoodToCurrentFridge(foodItem))
+    if (this.state.newFood.is_drink) {
+      if (!isDrinkFull) {
+        fetch(CONSTANTS.FOOD_ITEMS_URL, config)
+        .then(res => res.json())
+        .then(foodItem => this.addFoodToCurrentFridge(foodItem))
+      }
+    } else if (!this.state.newFood.is_drink) {
+      if (!isFoodFull) {
+        fetch(CONSTANTS.FOOD_ITEMS_URL, config)
+        .then(res => res.json())
+        .then(foodItem => this.addFoodToCurrentFridge(foodItem))
+      }
+    } else {
+      console.log("ERROR: Current fridge is at capacity")
+      // TODO: Add error modal?
+    }
   }
 
   handleFoodFormChange = (e, val) => {
-    const {name, value} = val;
-    this.setState((prevState) => {
-      prevState.newFood[name] = value
-      return prevState;
-    })
+    const {name, value, checked} = val;
+
+    if (name === 'is_drink') {
+      this.setState((prevState) => {
+        prevState.newFood[name] = checked;
+        return prevState;
+      })
+    } else {
+      this.setState((prevState) => {
+        prevState.newFood[name] = value
+        return prevState;
+      })
+    }
   }
 
   addFoodToCurrentFridge = (foodItem) => {

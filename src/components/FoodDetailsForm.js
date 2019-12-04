@@ -13,7 +13,7 @@ class FoodDetailsForm extends Component {
       <Card style={{minWidth: "40%"}}>
         <Image src={open_fridge} wrapped ui={false} />
         <Card.Content>
-          <Card.Header>{ name }</Card.Header>
+          <Header as="h2" color="pink">{ name }</Header>
           <Divider />
           <Card.Description>
             <Form onSubmit={this.props.handleFoodFormSubmit} size="mini">
@@ -30,9 +30,7 @@ class FoodDetailsForm extends Component {
                   onChange={this.props.handleFoodFormChange}
                   name="is_drink" 
                   label="Beverage" 
-                  value="false" 
-                  //TODO: FIX THIS TO TOGGLE iehter 0/1 or true/false
-                  toggle
+                  toggle={true}
                 />
               </Form.Group>
               <Form.Input 
@@ -53,13 +51,13 @@ class FoodDetailsForm extends Component {
                 onChange={this.props.handleFoodFormChange}
                 name="price" 
                 label="Price" 
-                labelPosition='right' 
+                labelPosition='left' 
                 type='text' 
                 placeholder="2.99"
               >
                 <Label basic>$</Label>
                 <input/>
-                <Label>.00</Label>
+                
               </Form.Input>
               <Form.Input
                 onChange={this.props.handleFoodFormChange}
@@ -69,9 +67,9 @@ class FoodDetailsForm extends Component {
                 type="date" 
               />
               {/* https://react.semantic-ui.com/collections/form/#states-error */}
+              {/* TODO: add modal */}
               <Form.Button type="submit">Submit</Form.Button>
             </Form>
-            
           </Card.Description>
         </Card.Content>
         <Card.Content extra>

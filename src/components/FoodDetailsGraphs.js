@@ -1,9 +1,44 @@
 import React, {Component} from 'react';
-import { VictoryBar, VictoryChart, VictoryPie } from 'victory';
+import { VictoryBar, VictoryChart, VictoryPie, VictoryLabel } from 'victory';
 import CONSTANTS from '../constants';
-import { Card, Divider, Button, Icon } from 'semantic-ui-react';
+import { Card, Divider, Button, Icon, Statistic } from 'semantic-ui-react';
+let moment = require('moment');
 
 class FoodDetailsGraphs extends Component {
+
+  calculateTimeUntilExpiry = (expiryDate) => {
+    const now = moment();
+    const expiry = moment(expiryDate);
+    const timeTilExpiry = moment.duration(expiry.diff(now)).asDays();
+    return timeTilExpiry;
+  }
+
+  calculateTotalFoodAndDrink = () => {
+    const totalFoodAndDrink = {foodCount: 0, drinkCount: 0};
+    this.props.currentFridge.food_items.forEach((food) => {
+      if (food.is_drink === true) {
+        totalFoodAndDrink.drinkCount += 1;
+      } else if (food.is_drink === false) {
+        totalFoodAndDrink.foodCount += 1;
+      } else {
+        console.log('possible error on `foodItem.is_drink` property')
+      }
+    })
+    return totalFoodAndDrink;
+  }
+
+  populateBarChart = () => {
+    return this.props.currentFridge.food_items.map((foodItem) => {
+      return {x: foodItem.name, y: this.calculateTimeUntilExpiry(foodItem.expiration_date)}
+    })
+  }
+
+
+
+  populatePieChart = () => {
+
+  }
+
   render() {
     return (
       <Card style={{minWidth: '50%'}}>
@@ -12,14 +47,11 @@ class FoodDetailsGraphs extends Component {
           <Divider />
           <div>
             <VictoryChart domainPadding={30}>
+            <VictoryLabel text="Days Left Until Expiration" x={225} y={30} textAnchor="middle"/>
               <VictoryBar
                 animate={{ onLoad: { duration: 1000 } }}
-                style={{ data: { fill: "#6DB65B" }, labels: { fontSize: 16 } }}
-                data={[
-                  { x: "chips", y: 1234 },
-                  { x: "meat", y: 10000 },
-                  { x: "beer", y: 12000 },
-                ]}
+                style={{ data: { fill: "#007AD9" }, labels: { fontSize: 16 } }}
+                data={this.populateBarChart()}
               />
             </VictoryChart>
             <Divider />
@@ -37,11 +69,19 @@ class FoodDetailsGraphs extends Component {
             />
           </div>
           <Divider />
-          <p>Drink Capacity: { this.props.currentFridge.drink_capacity }</p>
-          <p>Food Capacity: { this.props.currentFridge.food_capacity }</p>
+          <Statistic.Group widths='two'>
+            <Statistic>
+            <Statistic.Value> {this.calculateTotalFoodAndDrink().drinkCount} / { this.props.currentFridge.drink_capacity }</Statistic.Value>
+            <Statistic.Label>Drink Capacity</Statistic.Label>
+            </Statistic>
+
+            <Statistic>
+            <Statistic.Value>{this.calculateTotalFoodAndDrink().foodCount} / { this.props.currentFridge.food_capacity }</Statistic.Value>
+            <Statistic.Label>Food Capacity</Statistic.Label>
+            </Statistic>
+          </Statistic.Group>
           <br/>
-          <p>Fetch recipes for food near it's expiration date:</p>
-          {/* <Button type="submit" loading>Loading</Button>  TODO: implement after recipe API fetch */}
+          <Card.Description>Fetch recipes for food nearing it's expiration date:</Card.Description>
           <Button type="submit" animated>
             <Button.Content visible> Next </Button.Content>
             <Button.Content hidden>

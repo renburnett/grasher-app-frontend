@@ -11,7 +11,7 @@ const CONSTANTS = {
     { key: 'meat', text: 'meat', value: 'meat' },
   ],
   COLOR_ARRAY: ["#FFC103", "#FF5331", "#007AD9", "#0BE7D7", "#EE3B95", "#14CE2A", "#CD1DEE"],
-  randomColors:  (num) => {
+  RANDOM_COLORS:  (num) => {
     const arr = ["#FFC103", "#FF5331", "#007AD9", "#0BE7D7", "#EE3B95", "#14CE2A", "#CD1DEE"]
     const arrCopy = [...arr]
     const return_arr = []

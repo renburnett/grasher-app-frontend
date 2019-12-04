@@ -42,7 +42,7 @@ class FoodTypesGraph extends Component {
   render() {
     return (
       <VictoryPie
-        animate={{ duration: 2000 }}
+        animate={{ duration: 1000 }}
         padding={80}
         colorScale={CONSTANTS.randomColors(this.state.graphData.length)}
         style={{ labels: { fontSize: 13 } }}
