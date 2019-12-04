@@ -49,19 +49,12 @@ class App extends Component {
       }
     })
 
-    this.setState(() => {
+    this.setState((prevState) => {
       localStorage.setItem('currentFridge', JSON.stringify(fridge))
-      return { currentFridge: fridge }
+      prevState.newFood.fridge_id = id; //set fridge_id for newFood variable
+      prevState.currentFridge = fridge;
+      return prevState;
     })
-  }
-
-  setNewFoodItemFridgeId = () => {
-    if (localStorage.currentFridge) {
-      this.setState((prevState) => {
-        const currentFridgeId = JSON.parse(localStorage.currentFridge).id;
-        return prevState.newFood.fridge_id = currentFridgeId;
-      })
-    }
   }
 
   fetchUsersFridges = () => {
@@ -161,7 +154,6 @@ class App extends Component {
     fetch(CONSTANTS.FOOD_ITEMS_URL, config)
     .then(res => res.json())
     .then(foodItem => this.addFoodToCurrentFridge(foodItem))
-    //.then(this.fetchUsersFridges())
   }
 
   handleFoodFormChange = (e, val) => {
