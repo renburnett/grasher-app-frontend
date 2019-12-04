@@ -254,8 +254,8 @@ class App extends Component {
       <div className="App">
         <Router>
           <Navbar handleLogout={this.handleLogout} />
-          <Route exact path='/' render={ () => <FridgesContainer isCurrentFridgeFoodOrDrinkFull={this.isCurrentFridgeFoodOrDrinkFull} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
-          <Route exact path='/fridges' render={ () => <FridgesContainer isCurrentFridgeFoodOrDrinkFull={this.isCurrentFridgeFoodOrDrinkFull} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/' render={ () => <FridgesContainer fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/fridges' render={ () => <FridgesContainer fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} loggedIn={loggedIn}/> }/>
           <Route path='/account' component={ () => <Account loggedIn={loggedIn} /> }/>
           <Route path='/signup' component={ () => <Signup /> }/>
