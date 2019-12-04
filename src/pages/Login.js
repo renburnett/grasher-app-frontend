@@ -9,8 +9,10 @@ class Login extends Component {
   // }
 
   render() {
-    if (this.props.loggedIn === true) {
-      this.props.history.push('/');
+    if (localStorage.loggedIn) {
+      if (JSON.parse(localStorage.loggedIn) === true) {
+        this.props.history.push('/fridges');
+      }
     }
     return (
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>

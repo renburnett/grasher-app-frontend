@@ -11,7 +11,7 @@ const FridgeLoadHOC = WrappedComponent => {
           return <WrappedComponent {...this.props}/>
         }
       } else {
-        return <h2>Loading...</h2>
+        return <h2>Loading...</h2> //TODO: add loader wheel?
       }
     }
     render(){
