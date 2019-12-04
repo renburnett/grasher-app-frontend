@@ -10,8 +10,6 @@ import CONSTANTS from '../constants';
 class FridgeDetail extends Component {
 
   componentDidMount() {
-    console.log('fridge detail', this.props.currentFridge)
-    // this.props.setCurrentFridge(this.props.match)
     this.props.setCurrentFridge(this.props.match.params.fridge_id)
   }
 

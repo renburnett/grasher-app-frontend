@@ -44,21 +44,14 @@ class App extends Component {
     let fridge = null;
     
     this.state.currentUsersFridges.forEach(fridgeItem => {
-      console.log(fridgeItem)
-      if (fridgeItem.id == id) {
+      if (fridgeItem.id === Number(id)) {
         fridge = fridgeItem;
       }
     })
 
-
-    console.log('set current fridge', fridge)
-
-    this.setState((prevState) => {
+    this.setState(() => {
       localStorage.setItem('currentFridge', JSON.stringify(fridge))
-      // prevState.currentFridge = fridge;
-      // prevState.newFood.fridge_id = id;
-      // return prevState;
-      return {currentFridge: fridge}
+      return { currentFridge: fridge }
     })
   }
 
@@ -82,11 +75,10 @@ class App extends Component {
         } else if (localStorage.currentUser) {
           userId = JSON.parse(localStorage.currentUser).id
         } else {
-          console.log('error, user not found')
+          console.log('Error: user not found')
         }
         const currentUsersFridges = fridges.filter(fridge => fridge.user_id === userId)
         localStorage.setItem('currentUsersFridges', JSON.stringify(currentUsersFridges))
-        console.log('currentUsersFridges', currentUsersFridges)
         return { currentUsersFridges: currentUsersFridges };
       })
     })
@@ -108,7 +100,6 @@ class App extends Component {
     if (localStorage.currentUsersFridges) {
       const rehydratedFridges = JSON.parse(localStorage.currentUsersFridges)
       this.setState({currentUsersFridges: rehydratedFridges})
-      //return rehydratedFridges;
     }
   }
 
@@ -125,7 +116,10 @@ class App extends Component {
     if (localStorage.currentFridge) {
       localStorage.removeItem('currentFridge');
     }
-    this.setState({currentUser: null})
+    if (localStorage.loggedIn) {
+      localStorage.removeItem('loggedIn');
+    }
+    this.setState({currentUser: null, loggedIn: false})
   }
 
   //login form handlers
@@ -217,14 +211,14 @@ class App extends Component {
         <Router>
           <Navbar handleLogout={this.handleLogout} />
           <Route exact path='/' render={ () => <FridgesContainer currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
-          <Route exact path='/fridges' render={ () => <FridgesContainer currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/fridges' render={ () => <FridgesContainer fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} loggedIn={loggedIn}/> }/>
           <Route path='/account' component={ () => <Account loggedIn={loggedIn} /> }/>
           <Route path='/signup' component={ () => <Signup /> }/>
           <Route 
             path='/fridges/:fridge_id' 
             render={ props => {
-              return <FridgeDetail {...props} fridgesReady={this.state.currentUsersFridges.length>0} handleFoodItemDelete={this.handleFoodItemDelete} handleFoodFormSubmit={this.handleFoodFormSubmit} handleFoodFormChange={this.handleFoodFormChange} fetchUsersFridges={this.fetchUsersFridges} currentFridge={this.state.currentFridge} setCurrentFridge={this.setCurrentFridge} loggedIn={loggedIn} />
+              return <FridgeDetail {...props} fridgesReady={this.state.currentUsersFridges.length > 0} handleFoodItemDelete={this.handleFoodItemDelete} handleFoodFormSubmit={this.handleFoodFormSubmit} handleFoodFormChange={this.handleFoodFormChange} fetchUsersFridges={this.fetchUsersFridges} currentFridge={this.state.currentFridge} setCurrentFridge={this.setCurrentFridge} loggedIn={loggedIn} />
             } }/>
         </Router>
       </div>
