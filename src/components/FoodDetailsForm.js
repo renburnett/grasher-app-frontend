@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Image, Card, Divider, Form, Header, Label } from 'semantic-ui-react';
+import { Image, Card, Form, Header, Label } from 'semantic-ui-react';
 import open_fridge from '../images/open_fridge.png';
 import CONSTANTS from '../constants';
+import RecipeApiFetcher from './RecipeApiFetcher';
 let moment = require('moment');
 
 class FoodDetailsForm extends Component {
@@ -14,7 +15,6 @@ class FoodDetailsForm extends Component {
         <Image src={open_fridge} wrapped ui={false} />
         <Card.Content>
           <Header as="h2" color="pink">{ name }</Header>
-          <Divider />
           <Card.Description>
             <Form onSubmit={this.props.handleFoodFormSubmit} size="mini">
               <Header>Add Food:</Header>
@@ -24,27 +24,31 @@ class FoodDetailsForm extends Component {
                   name="food_type" 
                   label="Food Type" 
                   placeholder="dairy"
-                  options={CONSTANTS.FOOD_OPTIONS} 
+                  options={CONSTANTS.FOOD_OPTIONS}
+                  required
                 />
                 <Form.Radio 
                   onChange={this.props.handleFoodFormChange}
-                  name="is_drink" 
-                  label="Beverage" 
+                  name="is_drink"
+                  label="Beverage"
                   toggle={true}
+                  required
                 />
               </Form.Group>
               <Form.Input 
                 onChange={this.props.handleFoodFormChange}
-                name="name" 
-                label="Food Name" 
-                placeholder="Eggs" 
+                name="name"
+                label="Food Name"
+                placeholder="Eggs"
+                required
               />
               <Form.Input
                 onChange={this.props.handleFoodFormChange}
                 name="quantity" 
                 label="Quantity" 
                 placeholder="1" 
-                max={drink_capacity + food_capacity} 
+                max={drink_capacity + food_capacity}
+                required
               />
               {/* TODO: change to dropdown? */}
               <Form.Input
@@ -54,22 +58,25 @@ class FoodDetailsForm extends Component {
                 labelPosition='left' 
                 type='text' 
                 placeholder="2.99"
+                required
               >
                 <Label basic>$</Label>
                 <input/>
-                
               </Form.Input>
               <Form.Input
                 onChange={this.props.handleFoodFormChange}
                 name="expiration_date" 
                 label="Expiration Date" 
                 placeholder={moment().format("L")} 
-                type="date" 
+                type="date"
+                required
               />
               {/* https://react.semantic-ui.com/collections/form/#states-error */}
               {/* TODO: add modal */}
               <Form.Button type="submit">Submit</Form.Button>
             </Form>
+            <br/>
+            <RecipeApiFetcher />
           </Card.Description>
         </Card.Content>
         <Card.Content extra>

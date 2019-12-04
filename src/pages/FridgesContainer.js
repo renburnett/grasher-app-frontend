@@ -9,7 +9,7 @@ class FridgesContainer extends Component {
 
   displayFridges = () => {
     return this.props.currentUsersFridges.map((fridge, idx) => {
-      return <Fridge fridge={fridge} key={fridge.id} idx={idx} />
+      return <Fridge fridge={fridge} isCurrentFridgeFoodOrDrinkFull={this.props.isCurrentFridgeFoodOrDrinkFull} key={fridge.id} idx={idx} />
     })
   }
 
