@@ -3,8 +3,6 @@ import { VictoryPie } from 'victory';
 import CONSTANTS from '../constants';
 
 class FoodTypesGraph extends Component {
-
-  
   state = {
     graphData: [
       { x: "vegetable", y: 0 },
@@ -42,9 +40,9 @@ class FoodTypesGraph extends Component {
   render() {
     return (
       <VictoryPie
-        animate={{ duration: 2000 }}
+        animate={{ duration: 1000 }}
         padding={80}
-        colorScale={CONSTANTS.randomColors(this.state.graphData.length)}
+        colorScale={CONSTANTS.RANDOM_COLORS(this.state.graphData.length)}
         style={{ labels: { fontSize: 13 } }}
         innerRadius={75}
         data={this.state.graphData}

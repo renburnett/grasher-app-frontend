@@ -31,7 +31,7 @@ class App extends Component {
       food_type: 'fruit',
       expiration_date: '11/12/2089',
       fridge_id: -1,
-      //quantity: 0, // TODO: Add ability to change quantity upon form submit
+      quantity: 0,
     },
   }
   
@@ -141,31 +141,86 @@ class App extends Component {
   }
 
   //food item add form handlers
+  isCurrentFridgeFoodOrDrinkFull = () => {
+    const foodOrDrinkFull = {
+      food: {full: false, total: 0}, 
+      drink: {full: false, total: 0},
+    }
+    let totalFood = 0;
+    let totalDrink = 0;
+
+    this.state.currentFridge.food_items.forEach((food) => {
+      if (food.is_drink) {
+        totalDrink += 1;
+      } else if (!food.is_drink) {
+        totalFood += 1;
+      }
+    })
+    if (totalFood >= this.state.currentFridge.food_capacity) {
+      foodOrDrinkFull.foodFull = true;
+    }
+    if (totalDrink >= this.state.currentFridge.drink_capacity) {
+      foodOrDrinkFull.drinkFull = true;
+    }
+    foodOrDrinkFull.food.total = totalFood;
+    foodOrDrinkFull.drink.total = totalDrink;
+    return foodOrDrinkFull;
+  }
+
   handleFoodFormSubmit = () => {
+    const fridgeCapacity = this.isCurrentFridgeFoodOrDrinkFull();
+    const { currentFridge, newFood } = this.state;
+    const newFood_quantity = Number(this.state.newFood.quantity);
+
     const config = {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state.newFood),
+      body: JSON.stringify(newFood),
     }
 
-    fetch(CONSTANTS.FOOD_ITEMS_URL, config)
-    .then(res => res.json())
-    .then(foodItem => this.addFoodToCurrentFridge(foodItem))
+    //check to ensure the newly submitted item wont go over our fridges food capacity
+    if (newFood.is_drink) {
+      if ((!fridgeCapacity.drink.full) && (fridgeCapacity.drink.total + newFood_quantity) <= currentFridge.drink_capacity) {
+        fetch(CONSTANTS.FOOD_ITEMS_URL, config)
+        .then(res => res.json())
+        .then(foodItem => this.addFoodToCurrentFridge(foodItem))
+      } else {
+        console.log("ERROR: Current fridge is at capacity")
+      }
+    } else if (!newFood.is_drink) {
+      if ((!fridgeCapacity.food.full) && (fridgeCapacity.food.total + newFood_quantity) <= currentFridge.food_capacity) {
+        fetch(CONSTANTS.FOOD_ITEMS_URL, config)
+        .then(res => res.json())
+        .then(foodItem => this.addFoodToCurrentFridge(foodItem))
+      } else {
+        console.log("ERROR: Current fridge is at capacity")
+      }
+    } else {
+      console.log("ERROR: Current fridge is at capacity")
+      // TODO: Add error modal?
+    }
   }
 
   handleFoodFormChange = (e, val) => {
-    const {name, value} = val;
-    this.setState((prevState) => {
-      prevState.newFood[name] = value
-      return prevState;
-    })
+    const {name, value, checked} = val;
+
+    if (name === 'is_drink') {
+      this.setState((prevState) => {
+        prevState.newFood[name] = checked;
+        return prevState;
+      })
+    } else {
+      this.setState((prevState) => {
+        prevState.newFood[name] = value
+        return prevState;
+      })
+    }
   }
 
   addFoodToCurrentFridge = (foodItem) => {
-    //TODO: make sure fridge is not full first
     this.setState((prevState) => {
       prevState.currentFridge.food_items.push(foodItem)
       return prevState;
@@ -192,7 +247,6 @@ class App extends Component {
     .then(this.removeFoodFromCurrentFridge(foodItem))
   }
 
-
   render() {
     const { currentUsersFridges, loggedIn } = this.state;
     
@@ -200,7 +254,7 @@ class App extends Component {
       <div className="App">
         <Router>
           <Navbar handleLogout={this.handleLogout} />
-          <Route exact path='/' render={ () => <FridgesContainer currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/' render={ () => <FridgesContainer fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route exact path='/fridges' render={ () => <FridgesContainer fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} loggedIn={loggedIn}/> }/>
           <Route path='/account' component={ () => <Account loggedIn={loggedIn} /> }/>
