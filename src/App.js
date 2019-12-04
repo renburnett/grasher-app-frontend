@@ -181,7 +181,6 @@ class App extends Component {
   }
 
   removeFoodFromCurrentFridge = (foodItem) => {
-    //TODO: make sure fridge is not full first
     this.setState((prevState) => {
       const updatedFridge = prevState.currentFridge.food_items.filter(food => food.id !== foodItem.id)
       prevState.currentFridge.food_items = updatedFridge;
@@ -198,8 +197,7 @@ class App extends Component {
       },
     }
     fetch(CONSTANTS.FOOD_ITEMS_URL + '/' + foodItem.id, config)
-    .then(res => res.json())
-    .then(deletedItem => this.removeFoodFromCurrentFridge(deletedItem))
+    .then(this.removeFoodFromCurrentFridge(foodItem))
   }
 
 
