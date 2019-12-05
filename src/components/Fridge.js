@@ -1,4 +1,4 @@
-import { Header, Card, Image, Divider, Progress } from 'semantic-ui-react';
+import { Header, Card, Image, Divider, Progress, Button, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import FoodTypesGraph from './FoodTypesGraph';
@@ -44,16 +44,26 @@ class Fridge extends Component {
 
   render(){
     return (
-      <Card
-        as={Link}
-        to={`/fridges/${this.props.fridge.id}`}
-        style={{minWidth: '40vh'}}
-      >
+      <Card style={{minWidth: '40vh'}} >
         <Card.Content>
-          <Header as='h2' color='blue'>
-            { this.shuffleIcon() }
-            { this.props.fridge.name }
-          </Header>
+          <Grid textAlign='center' columns={3} verticalAlign='middle'>
+            <Grid.Row>
+              <Grid.Column>
+                <Image size='mini'>{ this.shuffleIcon() }</Image>
+              </Grid.Column>
+              <Grid.Column>
+                <Header as='h3' color='blue'>{ this.props.fridge.name }</Header>
+              </Grid.Column>
+              <Grid.Column>
+                <Button fridge_id={this.props.fridge.id} icon='x' size='medium' onClick={this.props.handleFridgeDelete} />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Card.Content>
+        <Card.Content
+          as={Link}
+          to={`/fridges/${this.props.fridge.id}`}
+        >
           <Divider horizontal>fridge contents</Divider>
           <Card.Description>
             <FoodTypesGraph fridge={this.props.fridge}/>

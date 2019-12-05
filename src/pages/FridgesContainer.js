@@ -9,19 +9,21 @@ class FridgesContainer extends Component {
 
   displayFridges = () => {
     return this.props.currentUsersFridges.map((fridge, idx) => {
-      return <Fridge fridge={fridge} key={fridge.id} idx={idx} />
+      return <Fridge handleFridgeDelete={this.props.handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />
     })
   }
 
   render() {
     return (
-      <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: '100vh'}}>
-          <Card.Group centered>
-            <NewFridgeForm />
-            {this.displayFridges()}
-          </Card.Group>
-        </Grid.Column>
+      <Grid columns={3} stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+        <Grid.Row>
+          <Grid.Column style={{ maxWidth: '100vh'}}>
+            <NewFridgeForm handleFridgeFormSubmit={this.props.handleFridgeFormSubmit} handleFridgeFormChange={this.props.handleFridgeFormChange} />
+            <Card.Group centered>
+              {this.displayFridges()}
+            </Card.Group>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     )
   }

@@ -124,16 +124,6 @@ class App extends Component {
     this.setState({currentUser: null, loggedIn: false})
   }
 
-  //new fridge handlers
-  handleFridgeFormSubmit = () => {
-
-  }
-
-  handleFridgeFormChange = () => {
-    
-  }
-
-
   //login form handlers
   handleLoginChange = (e, val) => {
     const { name, value } = val;
@@ -159,32 +149,89 @@ class App extends Component {
     })
   }
 
-  //food item add form handlers
-  isCurrentFridgeFoodOrDrinkFull = () => {
-    const foodOrDrinkFull = {
-      food: {full: false, total: 0}, 
-      drink: {full: false, total: 0},
-    }
-    let totalFood = 0;
-    let totalDrink = 0;
-
-    this.state.currentFridge.food_items.forEach((food) => {
-      if (food.is_drink) {
-        totalDrink += 1;
-      } else if (!food.is_drink) {
-        totalFood += 1;
-      }
+  //new fridge handlers / helpers
+  handleFridgeFormChange = (e, val) => {    
+    const { name, value } = val;
+    
+    this.setState((prevState) => {
+      prevState.newFridge[name] = value;
+      return prevState;
     })
-    if (totalFood >= this.state.currentFridge.food_capacity) {
-      foodOrDrinkFull.foodFull = true;
-    }
-    if (totalDrink >= this.state.currentFridge.drink_capacity) {
-      foodOrDrinkFull.drinkFull = true;
-    }
-    foodOrDrinkFull.food.total = totalFood;
-    foodOrDrinkFull.drink.total = totalDrink;
-    return foodOrDrinkFull;
   }
+  
+  handleFridgeFormSubmit = () => {
+    const fridgeCopy = {...this.state.newFridge};
+    fridgeCopy.user_id = this.state.currentUser.id;
+
+    const config = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(fridgeCopy),
+    }
+
+    fetch(CONSTANTS.FRIDGES_URL, config)
+    .then(res => res.json())
+    .then(fridge => this.addNewFridgeToUserStore(fridge))
+  }
+
+  handleFridgeDelete = (e, val) => {
+    const { fridge_id } = val;
+
+    const config = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    }
+    fetch(CONSTANTS.FRIDGES_URL + '/' + fridge_id, config)
+    .then(this.removeFridgeFromCurrentUserStore(fridge_id))
+  }
+
+  addNewFridgeToUserStore = (fridge) => {
+    this.setState((prevState) => {
+      prevState.currentUsersFridges.push(fridge)
+      return prevState;
+    })
+  }
+
+  removeFridgeFromCurrentUserStore = (fridgeId) => {
+    this.setState((prevState) => {
+      const updatedFridgesStore = prevState.currentUsersFridges.filter(frg => frg.id !== fridgeId)
+      prevState.currentUsersFridges = updatedFridgesStore;
+      return prevState;
+    })
+  }
+
+    //food item add form handlers / helpers
+    isCurrentFridgeFoodOrDrinkFull = () => {
+      const foodOrDrinkFull = {
+        food: {full: false, total: 0}, 
+        drink: {full: false, total: 0},
+      }
+      let totalFood = 0;
+      let totalDrink = 0;
+  
+      this.state.currentFridge.food_items.forEach((food) => {
+        if (food.is_drink) {
+          totalDrink += 1;
+        } else if (!food.is_drink) {
+          totalFood += 1;
+        }
+      })
+      if (totalFood >= this.state.currentFridge.food_capacity) {
+        foodOrDrinkFull.foodFull = true;
+      }
+      if (totalDrink >= this.state.currentFridge.drink_capacity) {
+        foodOrDrinkFull.drinkFull = true;
+      }
+      foodOrDrinkFull.food.total = totalFood;
+      foodOrDrinkFull.drink.total = totalDrink;
+      return foodOrDrinkFull;
+    }
 
   handleFoodFormSubmit = () => {
     const fridgeCapacity = this.isCurrentFridgeFoodOrDrinkFull();
@@ -199,7 +246,6 @@ class App extends Component {
       },
       body: JSON.stringify(newFood),
     }
-
     //check to ensure the newly submitted item wont go over our fridges food capacity
     if (newFood.is_drink) {
       if ((!fridgeCapacity.drink.full) && (fridgeCapacity.drink.total + newFood_quantity) <= currentFridge.drink_capacity) {
@@ -273,8 +319,8 @@ class App extends Component {
       <div className="App">
         <Router>
           <Navbar handleLogout={this.handleLogout} />
-          <Route exact path='/' render={ () => <FridgesContainer fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
-          <Route exact path='/fridges' render={ () => <FridgesContainer fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/' render={ () => <FridgesContainer handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/fridges' render={ () => <FridgesContainer handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} loggedIn={loggedIn}/> }/>
           <Route path='/account' component={ () => <Account loggedIn={loggedIn} /> }/>
           <Route path='/signup' component={ () => <Signup /> }/>
