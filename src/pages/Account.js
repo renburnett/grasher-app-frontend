@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SecurityHOC from '../HOCs/SecurityHOC';
+import FridgeContainerLoadHOC from '../HOCs/FridgeContainerLoadHOC';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 
 class Account extends Component {
@@ -11,21 +12,27 @@ class Account extends Component {
   render() {
     return (
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: '80vh'}}>
+        <Grid.Column style={{ maxWidth: '80vh' }}>
 
           <Form size='large'>
             <Segment>
               <Header as='h2' color='blue' textAlign='left'>
                 Change Account Info
               </Header>
-
-              <Form.Input fluid icon='user' iconPosition='left' placeholder='maria@nw_harvest.org' />
+              <Form.Input 
+                label="New Username"
+                fluid 
+                icon='user'
+                iconPosition='left'
+                value={this.props.currentUser.email}
+              />
               <Form.Input
+                label="New Password"
                 fluid
                 icon='lock'
                 iconPosition='left'
-                placeholder='password'
                 type='password'
+                placeholder='new_p4s$w0rd'
               />
               <Button color='teal' fluid size='large'>
                 Submit
@@ -38,4 +45,4 @@ class Account extends Component {
   }
 }
 
-export default SecurityHOC(Account);
+export default FridgeContainerLoadHOC(SecurityHOC(Account));

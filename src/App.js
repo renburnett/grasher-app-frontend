@@ -313,7 +313,7 @@ class App extends Component {
   }
 
   render() {
-    const { currentUsersFridges, loggedIn } = this.state;
+    const { currentUsersFridges, loggedIn, currentUser } = this.state;
     
     return (
       <div className="App">
@@ -322,7 +322,7 @@ class App extends Component {
           <Route exact path='/' render={ () => <FridgesContainer handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route exact path='/fridges' render={ () => <FridgesContainer handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} loggedIn={loggedIn}/> }/>
-          <Route path='/account' component={ () => <Account loggedIn={loggedIn} /> }/>
+          <Route path='/account' component={ () => <Account fridgesReady={this.state.currentUser} loggedIn={loggedIn} currentUser={currentUser}/> }/>
           <Route path='/signup' component={ () => <Signup /> }/>
           <Route 
             path='/fridges/:fridge_id' 
