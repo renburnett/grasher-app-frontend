@@ -23,6 +23,15 @@ class App extends Component {
       total_items_value: 0,
       food_items: [],
     },
+
+    newFridge: {
+      name: '', 
+      user_id: -1,
+      food_capacity: 0,
+      drink_capacity: 0,
+      is_full: false, 
+      total_items_value: 0,
+    },
     
     newFood: {
       name: '',
@@ -114,6 +123,16 @@ class App extends Component {
     }
     this.setState({currentUser: null, loggedIn: false})
   }
+
+  //new fridge handlers
+  handleFridgeFormSubmit = () => {
+
+  }
+
+  handleFridgeFormChange = () => {
+    
+  }
+
 
   //login form handlers
   handleLoginChange = (e, val) => {

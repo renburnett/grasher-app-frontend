@@ -3,9 +3,9 @@ import Fridge from '../components/Fridge';
 import FridgeContainerLoadHOC from '../HOCs/FridgeContainerLoadHOC';
 import SecurityHOC from '../HOCs/SecurityHOC';
 import { Grid, Card } from 'semantic-ui-react'
+import NewFridgeForm from '../components/NewFridgeForm';
 
 class FridgesContainer extends Component {
-
 
   displayFridges = () => {
     return this.props.currentUsersFridges.map((fridge, idx) => {
@@ -18,6 +18,7 @@ class FridgesContainer extends Component {
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: '100vh'}}>
           <Card.Group centered>
+            <NewFridgeForm />
             {this.displayFridges()}
           </Card.Group>
         </Grid.Column>
