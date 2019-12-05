@@ -27,7 +27,7 @@ class Navbar extends Component {
           active={activeItem === 'home'}
           onClick={this.handleNavItemClick}
         >
-          <img alt="grasher app icon" src={grash_icon} />
+          <img className="grasher_icon" alt="grasher app icon" src={grash_icon} />
         </Menu.Item>
         <Menu.Item
           as={Link}

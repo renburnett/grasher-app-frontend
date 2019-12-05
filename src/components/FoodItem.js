@@ -20,6 +20,7 @@ class FoodItem extends Component {
             <Icon floated='left' size='large' name='food' />
             { foodItem.name }
             <Button onClick={(e, foodItem) => {this.props.handleFoodItemDelete(e, foodItem)}} floated='right' icon='x' id={foodItem.id} />
+              {/* TODO: Add "Are you sure" Modal on delete button */}
           </Card.Header>
           <Divider />
           <Card.Description>
