@@ -7,6 +7,10 @@ import NewFridgeForm from '../components/NewFridgeForm';
 
 class FridgesContainer extends Component {
 
+  componentDidMount() {
+    this.props.history.push('/fridges');
+  }
+
   displayFridges = () => {
     return this.props.currentUsersFridges.map((fridge, idx) => {
       return <Fridge handleFridgeDelete={this.props.handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />

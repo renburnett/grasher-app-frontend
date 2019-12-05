@@ -23,25 +23,9 @@ class App extends Component {
       total_items_value: 0,
       food_items: [],
     },
-
-    newFridge: {
-      name: '', 
-      user_id: -1,
-      food_capacity: 0,
-      drink_capacity: 0,
-      is_full: false, 
-      total_items_value: 0,
-    },
     
-    newFood: {
-      name: '',
-      is_drink: false,
-      price: 0.00,
-      food_type: 'fruit',
-      expiration_date: '11/12/2089',
-      fridge_id: -1,
-      quantity: 0,
-    },
+    newFridge: {name: '', user_id: -1,food_capacity: 0,drink_capacity: 0,is_full: false, total_items_value: 0},
+    newFood: { name: '', is_drink: false, price: 0.00, food_type: 'fruit', expiration_date: '11/12/2089', fridge_id: -1, quantity: 0},
   }
   
   componentDidMount() {
@@ -312,6 +296,13 @@ class App extends Component {
     .then(this.removeFoodFromCurrentFridge(foodItem))
   }
 
+  updateCurrentUser = (user) => {
+    this.setState((prevState) => {
+      prevState.currentUser = user;
+      return prevState;
+    })
+  }
+
   render() {
     const { currentUsersFridges, loggedIn, currentUser } = this.state;
     
@@ -319,10 +310,10 @@ class App extends Component {
       <div className="App">
         <Router>
           <Navbar handleLogout={this.handleLogout} />
-          <Route exact path='/' render={ () => <FridgesContainer handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
-          <Route exact path='/fridges' render={ () => <FridgesContainer handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/' render={ () => <FridgesContainer fetchUsersFridges={this.fetchUsersFridges} handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
+          <Route exact path='/fridges' render={ props => <FridgesContainer {...props} fetchUsersFridges={this.fetchUsersFridges} handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={loggedIn} /> }/>
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} loggedIn={loggedIn}/> }/>
-          <Route path='/account' component={ () => <Account fridgesReady={this.state.currentUser} loggedIn={loggedIn} currentUser={currentUser}/> }/>
+          <Route path='/account' component={ () => <Account updateCurrentUser={this.updateCurrentUser} fridgesReady={this.state.currentUser} loggedIn={loggedIn} currentUser={currentUser}/> }/>
           <Route path='/signup' component={ () => <Signup /> }/>
           <Route 
             path='/fridges/:fridge_id' 
