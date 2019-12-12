@@ -6,7 +6,7 @@ const FridgeLoadHOC = WrappedComponent => {
     fridgeCheck = () => {
       if (this.props.fridgesReady) {
         if (this.props.currentFridge == null) {
-          return <h1>ERROR, this fridge is bogus</h1>
+          return <h1>ERROR, fridge not found</h1>
         } else {
           return <WrappedComponent {...this.props}/>
         }
