@@ -9,15 +9,10 @@ class Login extends Component {
   // }
 
   render() {
-    if (localStorage.loggedIn) {
-      if (JSON.parse(localStorage.loggedIn) === true) {
-        this.props.history.push('/fridges');
-      }
-    }
     return (
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: '75vh'}}>
-          <Form onSubmit={this.props.handleLoginSubmit} size='large'>
+          <Form onSubmit={() => {this.props.handleLoginSubmit(this.props)}} size='large'>
             <Segment>
               <Header as='h1' color='blue' textAlign='left'>
                 Grasher

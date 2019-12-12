@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import SecurityHOC from '../HOCs/SecurityHOC';
-import FridgeContainerLoadHOC from '../HOCs/FridgeContainerLoadHOC';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 import CONSTANTS from '../constants';
 
@@ -87,4 +86,4 @@ class Account extends Component {
   }
 }
 
-export default FridgeContainerLoadHOC(SecurityHOC(Account));
+export default SecurityHOC(Account);
