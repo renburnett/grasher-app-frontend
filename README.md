@@ -1,4 +1,4 @@
-This project implements `moment.js` and `react-semantic-ui` libraries
+This project implements `moment.js`, `victory` and `react-semantic-ui` libraries
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
