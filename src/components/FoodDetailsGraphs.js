@@ -17,9 +17,9 @@ class FoodDetailsGraphs extends Component {
     const totalFoodAndDrink = {foodCount: 0, drinkCount: 0};
     this.props.currentFridge.food_items.forEach((food) => {
       if (food.is_drink === true) {
-        totalFoodAndDrink.drinkCount += 1;
+        totalFoodAndDrink.drinkCount += food.quantity;
       } else if (food.is_drink === false) {
-        totalFoodAndDrink.foodCount += 1;
+        totalFoodAndDrink.foodCount += food.quantity;
       } else {
         console.log('possible error on `foodItem.is_drink` property')
       }
