@@ -2,12 +2,9 @@ This project implements `moment.js` and `react-semantic-ui` libraries
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+Project is hosted here:
+https://grasher-food-tracker-frontend.herokuapp.com/
 
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
+Login: 
+  - email:  r@r.com
+  - pass:   123
