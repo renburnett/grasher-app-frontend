@@ -5,7 +5,7 @@ const SecurityHOC = WrappedComponent => {
   return class SecurityHOC extends Component {
 
     isAuthorized = () => {
-      return localStorage.loggedIn;
+      return localStorage.currentUser;
     }
 
     render() {
