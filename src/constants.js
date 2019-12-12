@@ -1,8 +1,8 @@
 
 const CONSTANTS = {
-  USERS_URL: "https://grasher-food-tracker.herokuapp.com/users",
-  FRIDGES_URL: "https://grasher-food-tracker.herokuapp.com/fridges",
-  FOOD_ITEMS_URL: "https://grasher-food-tracker.herokuapp.com/food_items",
+  USERS_URL: "https://grasher-food-tracker-backend.herokuapp.com/users",
+  FRIDGES_URL: "https://grasher-food-tracker-backend.herokuapp.com/fridges",
+  FOOD_ITEMS_URL: "https://grasher-food-tracker-backend.herokuapp.com/food_items",
   FOOD_OPTIONS: [
     { key: 'vegetable', text: 'vegetable', value: 'vegetable' },
     { key: 'fruit', text: 'fruit', value: 'fruit' },
