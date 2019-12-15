@@ -4,10 +4,6 @@ import { Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
 class Login extends Component {
 
-  // componentDidUpdate() {
-  //   //TODO: refactor to pull GRID out of login AND FridgesContainer?
-  // }
-
   render() {
     return (
       <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
@@ -20,13 +16,12 @@ class Login extends Component {
                   we don't let your groceries expire on you!
                 </Header.Subheader>
               </Header>
-
               <Form.Input 
                 value={this.props.email}
                 fluid 
                 icon='user' 
                 iconPosition='left'
-                placeholder='maria@nw_harvest.org'
+                placeholder='r@r.com'
                 name="email"
                 onChange={this.props.handleLoginChange}
               />
@@ -35,7 +30,7 @@ class Login extends Component {
                 fluid
                 icon='lock'
                 iconPosition='left'
-                placeholder='password'
+                placeholder='123'
                 name='password'
                 onChange={this.props.handleLoginChange}
               />

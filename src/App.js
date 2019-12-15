@@ -5,9 +5,8 @@ import Login from './pages/Login';
 import FridgeDetail from './pages/FridgeDetail';
 import Account from './pages/Account';
 import FridgesContainer from './pages/FridgesContainer';
-import Signup from './components/Signup';
+import SignUp from './pages/SignUp';
 import CONSTANTS from './constants';
-
 
 //TODO: MODAL ON FRIDGE DETAIL PAGE TO TELL WHEN EXXPIRED
 //TODO: If its open calculate new dates (open boolean) (data source?)
@@ -66,7 +65,7 @@ class App extends Component {
         } else if (localStorage.currentUser) {
           userId = JSON.parse(localStorage.currentUser).id
         } else {
-          console.log('Error: user not found')
+          console.log('User not found')
         }
         const currentUsersFridges = fridges.filter(fridge => fridge.user_id === userId)
         localStorage.setItem('currentUsersFridges', JSON.stringify(currentUsersFridges))
@@ -85,13 +84,6 @@ class App extends Component {
       this.setState({currentUser: rehydratedUser})
     }
   }
-
-  // getCurrentFridgesFromLocalStorage = () => {
-  //   if (localStorage.currentUsersFridges) {
-  //     const rehydratedFridges = JSON.parse(localStorage.currentUsersFridges)
-  //     this.setState({currentUsersFridges: rehydratedFridges})
-  //   }
-  // }
 
   handleLogout = () => {
     if (localStorage.currentUser) {
@@ -311,7 +303,7 @@ class App extends Component {
           <Route exact path='/fridges' render={ props => <FridgesContainer {...props} fetchUsersFridges={this.fetchUsersFridges} handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={currentUser} /> }/>
           <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} currentUser={this.state.currentUser}/> }/>
           <Route path='/account' component={ () => <Account updateCurrentUser={this.updateCurrentUser} loggedIn={currentUser} currentUser={currentUser}/> }/>
-          <Route path='/signup' component={ () => <Signup /> }/>
+          <Route path='/signup' component={ () => <SignUp /> }/>
           <Route 
             path='/fridges/:fridge_id' 
             render={ props => {

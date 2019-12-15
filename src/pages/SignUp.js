@@ -1,40 +1,31 @@
 import React, { Component } from 'react';
-import SecurityHOC from '../HOCs/SecurityHOC';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 import CONSTANTS from '../constants';
 
-class Account extends Component {
+class SignUp extends Component {
 
   state = {
     newUser: { name: '', email: '_@_.com', password: 'shred420', budget: 0, fridges: [] },
   }
 
-  componentDidMount() {
-    if (localStorage.currentUser) {
-      const user = JSON.parse(localStorage.currentUser);
-      this.setState({newUser: user})
-    }
-  }
-
   //handlers/helpers for account form 
-  handleAccountFormSubmit = (e, val) => {
-    const userCopy = {...this.state.newUser};
-    
+  handleNewUserFormSubmit = (e, val) => {
     const config = {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(userCopy),
+      body: JSON.stringify(this.state.newUser),
     }
 
-    fetch(CONSTANTS.USERS_URL + '/' + userCopy.id, config)
+    fetch(CONSTANTS.USERS_URL, config)
     .then(res => res.json())
+    .then(data => console.log(data))
     .then(user => this.props.updateCurrentUser(user))
   }
 
-  handleAccountFormChange = (e, val) => {
+  handleNewUserFormChange = (e, val) => {
     const {name, value} = val;
     this.setState((prevState) => {
       prevState.newUser[name] = value;
@@ -45,37 +36,44 @@ class Account extends Component {
   render() {
     return (
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-      {/* //TODO: refactor to pull GRID out of login AND FridgesContainer? */}
         <Grid.Column style={{ maxWidth: '50vh' }}>
           <Segment>
-            <Form size='large' onSubmit={this.handleAccountFormSubmit}>
+            <Form size='large' onSubmit={this.handleNewUserFormSubmit}>
                 <Header as='h2' color='blue' textAlign='left'>
                   Change Account Info
                 </Header>
                 <Form.Input 
-                  label="New Email"
+                  label="Email"
                   name='email'
+                  fluid 
+                  icon='mail'
+                  iconPosition='left'
+                  onChange={this.handleNewUserFormChange}
+                />
+                <Form.Input 
+                  label="Name"
+                  name='name'
                   fluid 
                   icon='user'
                   iconPosition='left'
-                  onChange={this.handleAccountFormChange}
+                  onChange={this.handleNewUserFormChange}
                 />
                 <Form.Input
-                  label="New Password"
+                  label="Password"
                   name='password'
                   fluid
                   icon='lock'
                   iconPosition='left'
                   type='password'
-                  onChange={this.handleAccountFormChange}
+                  onChange={this.handleNewUserFormChange}
                 />
                 <Form.Input
-                  label="New Budget"
+                  label="Budget"
                   name='budget'
                   fluid
                   icon='dollar sign'
                   iconPosition='left'
-                  onChange={this.props.handleAccountFormChange}
+                  onChange={this.handleNewUserFormChange}
                 />
                 <Button color='teal' fluid size='large' type='submit'>
                   Submit
@@ -88,4 +86,4 @@ class Account extends Component {
   }
 }
 
-export default SecurityHOC(Account);
+export default SignUp;
