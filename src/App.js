@@ -303,7 +303,7 @@ class App extends Component {
           <Route exact path='/fridges' render={ props => <FridgesContainer {...props} fetchUsersFridges={this.fetchUsersFridges} handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={currentUser} /> }/>
           <Route exact path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} currentUser={this.state.currentUser}/> }/>
           <Route exact path='/account' render={ () => <Account updateCurrentUser={this.updateCurrentUser} loggedIn={currentUser} currentUser={currentUser}/> }/>
-          <Route exact path='/signup' render={ props => <SignUp {...props} /> }/>
+          <Route exact path='/signup' render={ () => <SignUp updateCurrentUser={this.updateCurrentUser} /> }/>
           <Route 
             path='/fridges/:fridge_id' 
             render={ props => {
