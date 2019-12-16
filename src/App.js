@@ -75,7 +75,6 @@ class App extends Component {
   }
 
   setUserToLocalStorage = (user) => {
-    console.log('SETTING user', user)
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
