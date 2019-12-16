@@ -40,7 +40,7 @@ class SignUp extends Component {
           <Segment>
             <Form size='large' onSubmit={this.handleNewUserFormSubmit}>
                 <Header as='h2' color='blue' textAlign='left'>
-                  Change Account Info
+                  Create Account
                 </Header>
                 <Form.Input 
                   label="Email"
