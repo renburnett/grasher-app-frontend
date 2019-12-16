@@ -9,7 +9,7 @@ class Signup extends Component {
   }
 
   //handlers/helpers for account form 
-  handleNewUserFormSubmit = (props) => {
+  handleNewUserFormSubmit = () => {
     const config = {
       method: 'POST',
       headers: {
@@ -21,7 +21,7 @@ class Signup extends Component {
 
     fetch(CONSTANTS.USERS_URL, config)
     .then(res => res.json())
-    .then(user => this.props.updateCurrentUser(user, props))
+    .then(user => this.props.updateCurrentUser(user, this.props))
   }
 
   handleNewUserFormChange = (e, val) => {
