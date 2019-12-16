@@ -9,7 +9,7 @@ class Signup extends Component {
   }
 
   //handlers/helpers for account form 
-  handleNewUserFormSubmit = (e, val) => {
+  handleNewUserFormSubmit = (props) => {
     const config = {
       method: 'POST',
       headers: {
@@ -22,7 +22,7 @@ class Signup extends Component {
     fetch(CONSTANTS.USERS_URL, config)
     .then(res => res.json())
     .then(user => this.props.updateCurrentUser(user))
-    .then(this.props.history.push('/'))
+    .then(props.history.push('/'))
   }
 
   handleNewUserFormChange = (e, val) => {
@@ -38,7 +38,7 @@ class Signup extends Component {
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: '50vh' }}>
           <Segment>
-            <Form size='large' onSubmit={this.handleNewUserFormSubmit}>
+            <Form size='large' onSubmit={() => {this.handleNewUserFormSubmit(this.props)}}>
                 <Header as='h2' color='blue' textAlign='left'>
                   Create Account
                 </Header>
