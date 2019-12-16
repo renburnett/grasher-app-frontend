@@ -301,9 +301,9 @@ class App extends Component {
           <Navbar handleLogout={this.handleLogout} />
           <Route exact path='/' render={ () => <FridgesContainer fetchUsersFridges={this.fetchUsersFridges} handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={currentUser} /> }/>
           <Route exact path='/fridges' render={ props => <FridgesContainer {...props} fetchUsersFridges={this.fetchUsersFridges} handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={currentUser} /> }/>
-          <Route path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} currentUser={this.state.currentUser}/> }/>
-          <Route path='/account' component={ () => <Account updateCurrentUser={this.updateCurrentUser} loggedIn={currentUser} currentUser={currentUser}/> }/>
-          <Route path='/signup' component={ () => <SignUp /> }/>
+          <Route exact path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} currentUser={this.state.currentUser}/> }/>
+          <Route exact path='/account' component={ () => <Account updateCurrentUser={this.updateCurrentUser} loggedIn={currentUser} currentUser={currentUser}/> }/>
+          <Route exact path='/signup' component={ () => <SignUp /> }/>
           <Route 
             path='/fridges/:fridge_id' 
             render={ props => {
