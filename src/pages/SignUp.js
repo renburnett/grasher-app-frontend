@@ -21,8 +21,7 @@ class Signup extends Component {
 
     fetch(CONSTANTS.USERS_URL, config)
     .then(res => res.json())
-    .then(user => this.props.updateCurrentUser(user))
-    .then(props.history.push('/'))
+    .then(user => this.props.updateCurrentUser(user, props))
   }
 
   handleNewUserFormChange = (e, val) => {

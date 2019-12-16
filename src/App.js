@@ -286,12 +286,12 @@ class App extends Component {
     .then(this.removeFoodFromCurrentFridge(foodItem))
   }
 
-  updateCurrentUser = (user) => {
+  updateCurrentUser = (user, props) => {
     this.setState((prevState) => {
       this.setUserToLocalStorage(user)
       prevState.currentUser = user;
       return prevState;
-    })
+    }, () => {props.history.push('/')})
   }
 
   render() {
