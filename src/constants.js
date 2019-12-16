@@ -20,7 +20,7 @@ const CONSTANTS = {
       num = arr.length
       
     let i = 0;
-  
+
     while (i < num) {
       let randIdx = Math.floor(Math.random() * arr.length)
       if (arrCopy[randIdx] !== null) {

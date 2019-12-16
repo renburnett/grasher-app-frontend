@@ -32,6 +32,8 @@ class Account extends Component {
     fetch(CONSTANTS.USERS_URL + '/' + userCopy.id, config)
     .then(res => res.json())
     .then(user => this.props.updateCurrentUser(user))
+    .then(user => this.props.setUserToLocalStorage(user))
+    
   }
 
   handleAccountFormChange = (e, val) => {

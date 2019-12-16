@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 import CONSTANTS from '../constants';
 
-class SignUp extends Component {
+class Signup extends Component {
 
   state = {
     newUser: { name: '', email: '_@_.com', password: 'shred420', budget: 0, fridges: [] },
@@ -21,8 +21,8 @@ class SignUp extends Component {
 
     fetch(CONSTANTS.USERS_URL, config)
     .then(res => res.json())
-    .then(data => console.log(data))
     .then(user => this.props.updateCurrentUser(user))
+    .then(this.props.history.push('/'))
   }
 
   handleNewUserFormChange = (e, val) => {
@@ -86,4 +86,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+export default Signup;

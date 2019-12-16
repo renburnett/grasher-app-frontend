@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import FridgeDetail from './pages/FridgeDetail';
 import Account from './pages/Account';
 import FridgesContainer from './pages/FridgesContainer';
-import SignUp from './pages/SignUp';
+import Signup from './pages/Signup';
 import CONSTANTS from './constants';
 
 //TODO: MODAL ON FRIDGE DETAIL PAGE TO TELL WHEN EXXPIRED
@@ -75,6 +75,7 @@ class App extends Component {
   }
 
   setUserToLocalStorage = (user) => {
+    console.log('set user', user)
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
@@ -289,7 +290,7 @@ class App extends Component {
     this.setState((prevState) => {
       prevState.currentUser = user;
       return prevState;
-    })
+    }, () => {console.log('updating current user', user)})
   }
 
   render() {
@@ -303,7 +304,7 @@ class App extends Component {
           <Route exact path='/fridges' render={ props => <FridgesContainer {...props} fetchUsersFridges={this.fetchUsersFridges} handleFridgeDelete={this.handleFridgeDelete} handleFridgeFormChange={this.handleFridgeFormChange} handleFridgeFormSubmit={this.handleFridgeFormSubmit} fridgesReady={this.state.currentUsersFridges.length > 0} currentUsersFridges={currentUsersFridges} loggedIn={currentUser} /> }/>
           <Route exact path='/login' render={ props => <Login {...props} handleLoginSubmit={this.handleLoginSubmit} handleLoginChange={this.handleLoginChange} email={this.state.email} password={this.state.password} currentUser={this.state.currentUser}/> }/>
           <Route exact path='/account' render={ () => <Account updateCurrentUser={this.updateCurrentUser} loggedIn={currentUser} currentUser={currentUser}/> }/>
-          <Route exact path='/signup' render={ () => <SignUp updateCurrentUser={this.updateCurrentUser} /> }/>
+          <Route exact path='/signup' render={ props => <Signup {...props} setUserToLocalStorage={this.setUserToLocalStorage} updateCurrentUser={this.updateCurrentUser} /> }/>
           <Route 
             path='/fridges/:fridge_id' 
             render={ props => {
