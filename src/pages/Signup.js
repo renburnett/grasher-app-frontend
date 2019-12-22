@@ -21,7 +21,7 @@ class Signup extends Component {
 
     fetch(CONSTANTS.USERS_URL, config)
     .then(res => res.json())
-    .then(user => this.props.updateCurrentUser(user, this.props))
+    .then(newUser => this.props.updateCurrentUser(newUser, this.props))
   }
 
   handleNewUserFormChange = (e, val) => {
@@ -37,7 +37,7 @@ class Signup extends Component {
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: '50vh' }}>
           <Segment>
-            <Form size='large' onSubmit={() => {this.handleNewUserFormSubmit(this.props)}}>
+            <Form size='large' onSubmit={ this.handleNewUserFormSubmit }>
                 <Header as='h2' color='blue' textAlign='left'>
                   Create Account
                 </Header>
