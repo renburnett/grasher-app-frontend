@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
 import SecurityHOC from '../HOCs/SecurityHOC';
-import FridgeLoadHOC from '../HOCs/FridgeLoadHOC';
+import SingleFridgeLoadHOC from '../HOCs/SingleFridgeLoadHOC';
 import FoodDetailsForm from '../components/FoodDetailsForm';
 import FoodDetailsGraphs from '../components/FoodDetailsGraphs';
 import { Card, Grid } from 'semantic-ui-react';
@@ -58,4 +58,4 @@ FridgeDetail.defaultProps = {
   }
 }
 
-export default SecurityHOC(FridgeLoadHOC(FridgeDetail));
+export default SecurityHOC(SingleFridgeLoadHOC(FridgeDetail));
