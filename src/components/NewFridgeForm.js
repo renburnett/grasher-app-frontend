@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Form, Header, Rail, Segment, Grid } from 'semantic-ui-react';
+import { Form, Header, Rail, Segment, Grid } from 'semantic-ui-react';
 
 class NewFridgeForm extends Component {
   render() {
