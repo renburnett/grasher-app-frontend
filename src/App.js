@@ -33,8 +33,8 @@ class App extends Component {
   }
   
   componentDidMount() {
-    this.fetchUsersFridges()
     this.getUserFromLocalStorage()
+    this.fetchUsersFridges()
   }
 
   setCurrentFridge = (id) => {

@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import Fridge from '../components/Fridge';
 import SecurityHOC from '../HOCs/SecurityHOC';
+import FridgeLoadHOC from '../HOCs/FridgeLoadHOC';
 import { Grid, Card } from 'semantic-ui-react'
 import NewFridgeForm from '../components/NewFridgeForm';
 
 class FridgesContainer extends Component {
+
+  componentDidMount() {
+    this.props.fetchUsersFridges()
+  }
 
   displayFridges = () => {
     return this.props.currentUsersFridges.map((fridge, idx) => {
@@ -28,4 +33,4 @@ class FridgesContainer extends Component {
   }
 }
 
-export default SecurityHOC(FridgesContainer);
+export default SecurityHOC(FridgeLoadHOC(FridgesContainer));
