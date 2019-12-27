@@ -1,12 +1,12 @@
 import React from 'react'
 
-const FridgeLoadHOC = WrappedComponent => {
+const FridgesLoadHOC = WrappedComponent => {
   return class FridgeLoadHOC extends React.Component {
 
     fridgeCheck = () => {
       if (this.props.fridgesReady) {
-        if (this.props.currentFridge == null) {
-          return <h1>ERROR, fridge not found</h1>
+        if (this.props.currentUsersFridges.length === 0) {
+          return <h1>ERROR, fridges not found</h1>
         } else {
           return <WrappedComponent {...this.props}/>
         }
@@ -14,10 +14,10 @@ const FridgeLoadHOC = WrappedComponent => {
         return <h2>Loading...</h2> //TODO: add loader wheel?
       }
     }
-    render(){
+    render() {
       return this.fridgeCheck()
     }
   }
 }
 
-export default FridgeLoadHOC
+export default FridgesLoadHOC
