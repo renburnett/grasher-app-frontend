@@ -2,16 +2,8 @@ import React, {Component} from 'react';
 import { VictoryBar, VictoryChart, VictoryPie, VictoryLabel } from 'victory';
 import CONSTANTS from '../constants';
 import { Card, Header, Divider, Segment, Statistic } from 'semantic-ui-react';
-let moment = require('moment');
 
 class FoodDetailsGraphs extends Component {
-
-  calculateTimeUntilExpiry = (expiryDate) => {
-    const now = moment();
-    const expiry = moment(expiryDate);
-    const timeTilExpiry = moment.duration(expiry.diff(now)).asDays();
-    return timeTilExpiry;
-  }
 
   calculateTotalFoodAndDrink = () => {
     const totalFoodAndDrink = {foodCount: 0, drinkCount: 0};
@@ -29,7 +21,7 @@ class FoodDetailsGraphs extends Component {
 
   populateBarChart = () => {
     return this.props.currentFridge.food_items.map((foodItem) => {
-      return {x: foodItem.name, y: this.calculateTimeUntilExpiry(foodItem.expiration_date)}
+      return {x: foodItem.name, y: this.props.calculateTimeUntilExpiry(foodItem.expiration_date)}
     })
   }
 

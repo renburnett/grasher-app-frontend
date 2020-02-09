@@ -76,7 +76,7 @@ class FoodDetailsForm extends Component {
               <Form.Button type="submit">Submit</Form.Button>
             </Form>
             <br/>
-            <RecipeApiFetcher />
+            <RecipeApiFetcher getRecipesForFoodItemsNearExpiry={this.props.getRecipesForFoodItemsNearExpiry}/>
           </Card.Description>
         </Card.Content>
         <Card.Content extra>

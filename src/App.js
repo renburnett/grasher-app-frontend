@@ -7,8 +7,11 @@ import Account from './pages/Account';
 import FridgesContainer from './pages/FridgesContainer';
 import Signup from './pages/Signup';
 import CONSTANTS from './constants';
+require('dotenv').config()
+
 
 //TODO: MODAL ON FRIDGE DETAIL PAGE TO TELL WHEN EXXPIRED
+//TODO: azure function that fires daily to seed rails db
 //TODO: If its open calculate new dates (open boolean) (data source?)
 //Twilio API to send alert to phone for expiring food
 //TODO: Matt ask about food recipe API

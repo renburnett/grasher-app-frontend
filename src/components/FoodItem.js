@@ -5,8 +5,7 @@ const moment = require('moment');
 class FoodItem extends Component {
   
   state = {
-    expired: false,
-    expirationDate: moment().add(7, 'days'),
+    expirationDate: moment().add(7, 'days')
     //TODO: change this to user input
   }
   

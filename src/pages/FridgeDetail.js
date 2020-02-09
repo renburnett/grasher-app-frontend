@@ -5,17 +5,72 @@ import SingleFridgeLoadHOC from '../HOCs/SingleFridgeLoadHOC';
 import FoodDetailsForm from '../components/FoodDetailsForm';
 import FoodDetailsGraphs from '../components/FoodDetailsGraphs';
 import { Card, Grid } from 'semantic-ui-react';
+import CONSTANTS from '../constants';
+let moment = require('moment');
 
 class FridgeDetail extends Component {
 
+  state = {
+    foodItemsExpiringIn48Hrs: [],
+    recipes: {}
+  }
+
   componentDidMount() {
-    this.props.setCurrentFridge(this.props.match.params.fridge_id)
+    this.props.setCurrentFridge(this.props.match.params.fridge_id);
+  }
+
+  calculateTimeUntilExpiry = (expiryDate, inDays=true) => {
+    const now = moment();
+    const expiry = moment(expiryDate);
+    if (inDays === true) {
+      const timeTilExpiry = moment.duration(expiry.diff(now)).asDays();
+      if (timeTilExpiry < 0)
+        return 0;
+      else 
+        return timeTilExpiry;
+    } else {
+      const timeTilExpiry = moment.duration(expiry.diff(now)).asHours();
+      if (timeTilExpiry < 0)
+        return 0;
+      else 
+        return timeTilExpiry;
+    }
+  }
+
+  getRecipesForFoodItemsNearExpiry = () => {
+    this.setState((prevState) => {
+      prevState.foodItemsNearExpiry = this.props.currentFridge.food_items
+        .filter(foodItem => this.calculateTimeUntilExpiry(foodItem.expiration_date, false) <= 48)
+        .map(foodItem => foodItem.name)
+        .join(',');
+
+      return prevState;
+    }, () => {
+      this.fetchRecipes()
+    })
   }
 
   displayFoodItems = () => {
     return this.props.currentFridge.food_items.map((foodItem, id) => {
       return <FoodItem handleFoodItemDelete={this.props.handleFoodItemDelete} foodItem={foodItem} key={id} />
     })
+  }
+
+  fetchRecipes = () => {
+      const config = {
+      "method": "GET",
+      "headers": {
+        "x-rapidapi-host": CONSTANTS.SPOONACULAR_HEADER,
+        "x-rapidapi-key": process.env.SPOONACULAR_KEY
+        }
+      }
+
+    const modifiedUrl = CONSTANTS.SPOONACULAR_URL + `/recipes/findByIngredients?ingredients=${this.state.foodItemsNearExpiry}&number=3`;
+    
+    fetch(modifiedUrl, config)
+    .then(res => res.json())
+    .then(recipes => console.log(recipes))
+    .catch(error => console.log(error))
   }
 
   displayFridge = () => {
@@ -25,9 +80,13 @@ class FridgeDetail extends Component {
           handleFoodFormSubmit={this.props.handleFoodFormSubmit} 
           handleFoodFormChange={this.props.handleFoodFormChange} 
           fetchUsersFridges={this.props.fetchUsersFridges} 
-          currentFridge={this.props.currentFridge} 
+          currentFridge={this.props.currentFridge}
+          getRecipesForFoodItemsNearExpiry={this.getRecipesForFoodItemsNearExpiry}
         />
-        <FoodDetailsGraphs currentFridge={this.props.currentFridge} />
+        <FoodDetailsGraphs 
+          currentFridge={this.props.currentFridge}
+          calculateTimeUntilExpiry={this.calculateTimeUntilExpiry}
+        />
       </>
     )
   }
