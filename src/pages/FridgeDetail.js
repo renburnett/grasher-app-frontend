@@ -57,16 +57,18 @@ class FridgeDetail extends Component {
   }
 
   fetchRecipes = () => {
-      const config = {
+    const config = {
       "method": "GET",
       "headers": {
         "x-rapidapi-host": CONSTANTS.SPOONACULAR_HEADER,
         "x-rapidapi-key": process.env.SPOONACULAR_KEY
         }
       }
+      console.log('process.env', process.env)
+      console.log('process', process)
 
     const modifiedUrl = CONSTANTS.SPOONACULAR_URL + `/recipes/findByIngredients?ingredients=${this.state.foodItemsNearExpiry}&number=3`;
-    
+
     fetch(modifiedUrl, config)
     .then(res => res.json())
     .then(recipes => console.log(recipes))
