@@ -1,11 +1,11 @@
 
 const CONSTANTS = {
-  // USERS_URL: "https://grasher-food-tracker-backend.herokuapp.com/users",
-  // FRIDGES_URL: "https://grasher-food-tracker-backend.herokuapp.com/fridges",
-  // FOOD_ITEMS_URL: "https://grasher-food-tracker-backend.herokuapp.com/food_items",
-  USERS_URL: "http://localhost:3000/users",
-  FRIDGES_URL: "http://localhost:3000/fridges",
-  FOOD_ITEMS_URL: "http://localhost:3000/food_items",
+  USERS_URL: "https://grasher-food-tracker-backend.herokuapp.com/users",
+  FRIDGES_URL: "https://grasher-food-tracker-backend.herokuapp.com/fridges",
+  FOOD_ITEMS_URL: "https://grasher-food-tracker-backend.herokuapp.com/food_items",
+  // USERS_URL: "http://localhost:3000/users",
+  // FRIDGES_URL: "http://localhost:3000/fridges",
+  // FOOD_ITEMS_URL: "http://localhost:3000/food_items",
   SPOONACULAR_HEADER: "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
   SPOONACULAR_URL: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
   FOOD_OPTIONS: [
