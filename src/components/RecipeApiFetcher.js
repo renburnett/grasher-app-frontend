@@ -13,14 +13,14 @@ class RecipeApiFetcher extends Component {
             </Grid.Column>
             <Grid.Column>
             <Modal trigger={
-              <Button onClick={this.props.getRecipesForFoodItemsNearExpiry} size="big" type="submit" animated>
+              <Button onClick={this.props.getRecipesForFoodItemsNearExpiry} size="big" animated>
                 <Button.Content visible>Get Recipes</Button.Content>
                 <Button.Content hidden>
                   <Icon name='arrow right' />
                 </Button.Content>
               </Button>
             }>
-              <Modal.Header>Recipes Found</Modal.Header>
+              <Modal.Header>Recipes</Modal.Header>
               <Modal.Content image>
                 <Image wrapped size='small' src={recipe_default_image} />
                 <Modal.Description>

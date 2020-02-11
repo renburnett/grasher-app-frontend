@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Image, Card, Form, Header, Label } from 'semantic-ui-react';
 import open_fridge from '../images/open_fridge.png';
 import CONSTANTS from '../constants';
-import RecipeApiFetcher from './RecipeApiFetcher';
 let moment = require('moment');
 
 class FoodDetailsForm extends Component {
@@ -75,8 +74,6 @@ class FoodDetailsForm extends Component {
               {/* TODO: add modal */}
               <Form.Button type="submit">Submit</Form.Button>
             </Form>
-            <br/>
-            <RecipeApiFetcher getRecipesForFoodItemsNearExpiry={this.props.getRecipesForFoodItemsNearExpiry}/>
           </Card.Description>
         </Card.Content>
         <Card.Content extra>

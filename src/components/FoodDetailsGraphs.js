@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { VictoryBar, VictoryChart, VictoryPie, VictoryLabel } from 'victory';
 import CONSTANTS from '../constants';
 import { Card, Header, Divider, Segment, Statistic } from 'semantic-ui-react';
+import RecipeApiFetcher from './RecipeApiFetcher';
 
 class FoodDetailsGraphs extends Component {
 
@@ -65,6 +66,7 @@ class FoodDetailsGraphs extends Component {
               <Statistic.Label>Food Capacity</Statistic.Label>
             </Statistic>
           </Statistic.Group>
+          <RecipeApiFetcher getRecipesForFoodItemsNearExpiry={this.props.getRecipesForFoodItemsNearExpiry}/>
         </Card.Content>
         <Card.Content extra>
         Location: Seattle, WA    

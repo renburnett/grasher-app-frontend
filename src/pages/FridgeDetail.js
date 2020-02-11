@@ -25,13 +25,13 @@ class FridgeDetail extends Component {
     if (inDays === true) {
       const timeTilExpiry = moment.duration(expiry.diff(now)).asDays();
       if (timeTilExpiry < 0)
-        return 0;
+        return 0.1;
       else 
         return timeTilExpiry;
     } else {
       const timeTilExpiry = moment.duration(expiry.diff(now)).asHours();
       if (timeTilExpiry < 0)
-        return 0;
+        return 0.1;
       else 
         return timeTilExpiry;
     }
@@ -57,6 +57,7 @@ class FridgeDetail extends Component {
   }
 
   fetchRecipes = () => {
+    console.log('fetching recipes. . . ');
     const config = {
       "method": "GET",
       "headers": {
@@ -83,11 +84,11 @@ class FridgeDetail extends Component {
           handleFoodFormChange={this.props.handleFoodFormChange} 
           fetchUsersFridges={this.props.fetchUsersFridges} 
           currentFridge={this.props.currentFridge}
-          getRecipesForFoodItemsNearExpiry={this.getRecipesForFoodItemsNearExpiry}
         />
         <FoodDetailsGraphs 
           currentFridge={this.props.currentFridge}
           calculateTimeUntilExpiry={this.calculateTimeUntilExpiry}
+          getRecipesForFoodItemsNearExpiry={this.getRecipesForFoodItemsNearExpiry}
         />
       </>
     )
