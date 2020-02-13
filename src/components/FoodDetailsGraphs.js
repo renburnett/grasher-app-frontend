@@ -66,7 +66,10 @@ class FoodDetailsGraphs extends Component {
               <Statistic.Label>Food Capacity</Statistic.Label>
             </Statistic>
           </Statistic.Group>
-          <RecipeApiFetcher getRecipesForFoodItemsNearExpiry={this.props.getRecipesForFoodItemsNearExpiry}/>
+          <RecipeApiFetcher 
+            getRecipesForFoodItemsNearExpiry={this.props.getRecipesForFoodItemsNearExpiry}
+            recipes={this.props.recipes}
+          />
         </Card.Content>
         <Card.Content extra>
         Location: Seattle, WA    

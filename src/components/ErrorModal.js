@@ -8,18 +8,9 @@ class ErrorModal extends Component {
         <Modal basic size='small'>
         <Modal.Content>
           <p>
-            Your inbox is getting full, would you like us to enable automatic
-            archiving of old messages?
+            Food x, y and z has expired.
           </p>
         </Modal.Content>
-        <Modal.Actions>
-          <Button basic color='red' inverted>
-            <Icon name='remove' /> No
-          </Button>
-          <Button color='green' inverted>
-            <Icon name='checkmark' /> Yes
-          </Button>
-        </Modal.Actions>
       </Modal>
     )
   }

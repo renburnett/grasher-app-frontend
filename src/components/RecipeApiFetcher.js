@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Icon, Segment, Header, Grid, Modal, Image } from 'semantic-ui-react';
-import recipe_default_image from '../images/recipe_default_image.png';
+import { Button, Icon, Segment, Header, Grid, Modal, Item, Dimmer, Loader } from 'semantic-ui-react';
+import Recipe from '../components/Recipe';
 
 class RecipeApiFetcher extends Component {
+
+  displayRecipes = () => {
+    return this.props.recipes.map((recipe, idx) => <Recipe recipe={recipe} key={idx}/>)
+  }
+
   render() {
     return (
       <Segment>
@@ -20,23 +25,19 @@ class RecipeApiFetcher extends Component {
                 </Button.Content>
               </Button>
             }>
-              <Modal.Header>Recipes</Modal.Header>
+              {!(this.props.recipes.length > 0) ? <Dimmer active inverted> <Loader/> </Dimmer> : null}
+              <Modal.Header>Recipe Ideas</Modal.Header>
               <Modal.Content image>
-                <Image wrapped size='small' src={recipe_default_image} />
                 <Modal.Description>
-                  <Header>Recipe One</Header>
-                  <p>
-                    This will be where the associated recipes pop up
-                  </p>
+                <Item.Group divided>
+                  {this.props.recipes.length > 0 ? this.displayRecipes() : null}
+                </Item.Group>
                 </Modal.Description>
               </Modal.Content>
             </Modal>
             </Grid.Column>
           </Grid.Row>
         </Grid>
-
-        
-          
       </Segment>
     )
   }
