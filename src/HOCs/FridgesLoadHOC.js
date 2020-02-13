@@ -1,5 +1,4 @@
-import React from 'react';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import React from 'react'
 
 const FridgesLoadHOC = WrappedComponent => {
   return class FridgeLoadHOC extends React.Component {
@@ -12,7 +11,7 @@ const FridgesLoadHOC = WrappedComponent => {
           return <WrappedComponent {...this.props}/>
         }
       } else {
-        return <Dimmer active inverted> <Loader/> </Dimmer>
+        return <h2>Loading...</h2>
       }
     }
     render() {
