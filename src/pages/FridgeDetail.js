@@ -57,22 +57,21 @@ class FridgeDetail extends Component {
   }
 
   fetchRecipes = () => {
-    console.log('fetching recipes. . . ');
     const config = {
       "method": "GET",
       "headers": {
         "x-rapidapi-host": CONSTANTS.SPOONACULAR_HEADER,
-        "x-rapidapi-key": process.env.SPOONACULAR_KEY
+        "x-rapidapi-key": process.env.REACT_APP_SPOONACULAR_KEY
         }
       }
-      console.log('process.env', process.env)
-      console.log('process', process)
 
     const modifiedUrl = CONSTANTS.SPOONACULAR_URL + `/recipes/findByIngredients?ingredients=${this.state.foodItemsNearExpiry}&number=3`;
 
     fetch(modifiedUrl, config)
     .then(res => res.json())
-    .then(recipes => console.log(recipes))
+    .then(recipes => {
+      this.setState({recipes});
+    })
     .catch(error => console.log(error))
   }
 
@@ -89,6 +88,7 @@ class FridgeDetail extends Component {
           currentFridge={this.props.currentFridge}
           calculateTimeUntilExpiry={this.calculateTimeUntilExpiry}
           getRecipesForFoodItemsNearExpiry={this.getRecipesForFoodItemsNearExpiry}
+          recipes={this.state.recipes}
         />
       </>
     )

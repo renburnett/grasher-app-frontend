@@ -7,7 +7,7 @@ class NewFridgeForm extends Component {
       <Grid.Column>
         <Rail position='left'>
           <Segment>
-            <Form textAlign='left' onSubmit={this.props.handleFridgeFormSubmit} size="mini">
+            <Form onSubmit={this.props.handleFridgeFormSubmit} size="mini">
                 <Header>New Fridge:</Header>
                 <Form.Input 
                   onChange={this.props.handleFridgeFormChange}
