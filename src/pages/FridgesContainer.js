@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Fridge from '../components/Fridge';
 import SecurityHOC from '../HOCs/SecurityHOC';
-import FridgesLoadHOC from '../HOCs/FridgesLoadHOC';
 import { Grid, Card } from 'semantic-ui-react'
 import NewFridgeForm from '../components/NewFridgeForm';
 
@@ -33,4 +32,4 @@ class FridgesContainer extends Component {
   }
 }
 
-export default SecurityHOC(FridgesLoadHOC(FridgesContainer));
+export default SecurityHOC(FridgesContainer);

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FoodItem from '../components/FoodItem';
 import SecurityHOC from '../HOCs/SecurityHOC';
-import SingleFridgeLoadHOC from '../HOCs/SingleFridgeLoadHOC';
 import FoodDetailsForm from '../components/FoodDetailsForm';
 import FoodDetailsGraphs from '../components/FoodDetailsGraphs';
 import { Card, Grid } from 'semantic-ui-react';
@@ -25,7 +24,7 @@ class FridgeDetail extends Component {
     if (inDays === true) {
       const timeTilExpiry = moment.duration(expiry.diff(now)).asDays();
       if (timeTilExpiry < 0)
-        return 0.1;
+        return 0;
       else 
         return timeTilExpiry;
     } else {
@@ -120,4 +119,4 @@ FridgeDetail.defaultProps = {
   }
 }
 
-export default SecurityHOC(SingleFridgeLoadHOC(FridgeDetail));
+export default SecurityHOC(FridgeDetail);
