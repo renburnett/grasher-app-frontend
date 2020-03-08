@@ -15,3 +15,5 @@ Login:
 This project implements `moment.js`, `victory` and `react-semantic-ui` libraries
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+React frontend and a [Rails backend](https://github.com/renburnett/grasher-app-backend)
