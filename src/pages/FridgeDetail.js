@@ -30,7 +30,7 @@ class FridgeDetail extends Component {
     } else {
       const timeTilExpiry = moment.duration(expiry.diff(now)).asHours();
       if (timeTilExpiry < 0)
-        return 0.1;
+        return 0;
       else 
         return timeTilExpiry;
     }
