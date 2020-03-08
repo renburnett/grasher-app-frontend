@@ -1,3 +1,5 @@
+![All Fridges Landing Page](https://live.staticflickr.com/65535/49632722683_20e6465bb6_h.jpg)
+
 This project implements `moment.js`, `victory` and `react-semantic-ui` libraries
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -10,5 +12,3 @@ Please refresh the app a few times (I am running on Heroku's free tier and their
 Login: 
   - email:  r@r.com
   - pass:   123
-
-![All Fridges Landing Page](https://live.staticflickr.com/65535/49632722683_20e6465bb6_h.jpg)
