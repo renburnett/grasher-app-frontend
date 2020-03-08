@@ -11,4 +11,4 @@ Login:
   - email:  r@r.com
   - pass:   123
 
-![All Fridges Landing Page](https://www.flickr.com/photos/52261668@N08/49632722683/in/dateposted-public/)
+![All Fridges Landing Page](https://live.staticflickr.com/65535/49632722683_20e6465bb6_h.jpg)
