@@ -1,3 +1,6 @@
+##Grasher
+#Food Expiration Tracking App for Food Banks
+
 ![All Fridges Landing Page](https://live.staticflickr.com/65535/49632722683_20e6465bb6_h.jpg)
 
 This project implements `moment.js`, `victory` and `react-semantic-ui` libraries
