@@ -63,6 +63,10 @@ const App  = () => {
   }
   const [currentFridge, setCurrentFridge] = useState(initializeCurrentFridge());
 
+  useEffect(() => {
+    initializeCurrentUsersFridges();
+  })
+
   const setUserToLocalStorage = (user) => {
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
