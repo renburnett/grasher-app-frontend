@@ -4,7 +4,8 @@
 Project is hosted here:
 https://grasher-food-tracker-frontend.herokuapp.com/
 
-Please refresh the app *(I am running on Heroku's free tier and their dynos take a refresh or two to spin up)*
+Please refresh the app 
+*(I am running on Heroku's free tier and their dynos take a refresh or two to spin up)*
 
 Login: 
   - email:  r@r.com
