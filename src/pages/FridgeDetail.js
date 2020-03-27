@@ -12,22 +12,6 @@ let moment = require('moment');
 const FridgeDetail = (props) => {
   const [state, actions] = useGlobal();
 
-  const setCurrentFridge = () => {
-    if (localStorage.currentFridge !== "undefined" && localStorage.currentFridge) {
-      actions.setCurrentFridge(JSON.parse(localStorage.currentFridge));
-    } else if (props) {
-      const matchedFridge = state.currentUsersFridges.find(fridge => fridge.id === Number(props.match.params.fridge_id));
-      localStorage.setItem('currentFridge', JSON.stringify(matchedFridge));
-      actions.setCurrentFridge(matchedFridge);
-    } else { 
-      actions.setCurrentFridge({ name: '', drink_capacity: 0, food_capacity: 0, total_items_value: 0, food_items: [] });
-    }
-  }
-
-  useEffect(() => {
-    setCurrentFridge();
-  })
-
    //food item add form handlers / helpers
   const isCurrentFridgeFoodOrDrinkFull = () => {
     const foodOrDrinkFull = {

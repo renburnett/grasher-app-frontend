@@ -1,6 +1,7 @@
 import { Header, Card, Image, Divider, Progress, Button, Grid } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import React from 'react';
+import useGlobal from '../util/store';
 import FoodTypesGraph from './FoodTypesGraph';
 import fridge_icon1 from '../images/fridge_01.svg';
 import fridge_icon2 from '../images/fridge_02.svg';
@@ -8,6 +9,8 @@ import fridge_icon3 from '../images/fridge_03.svg';
 let moment = require('moment');
 
 const Fridge = (props) => {
+  const [state, actions] = useGlobal();
+  const history = useHistory();
 
   const shuffleIcon = () => {
     if (props.idx % 3 === 0) {
@@ -42,6 +45,17 @@ const Fridge = (props) => {
     return percentage;
   }
 
+  const updateCurrentFridge = () => {
+    const matchedFridge = state.currentUsersFridges.find(fridge => fridge.id === props.fridge.id);
+    localStorage.setItem('currentFridge', JSON.stringify(matchedFridge));
+    actions.setCurrentFridge(matchedFridge);
+  }
+
+  const handleFridgeClick = async () => {
+    history.push(`/fridges/${props.fridge.id}`);
+    updateCurrentFridge();
+  }
+
   return (
     <Card style={{minWidth: '40vh'}} >
       <Card.Content>
@@ -60,16 +74,17 @@ const Fridge = (props) => {
         </Grid>
       </Card.Content>
       <Card.Content
-        as={Link}
-        to={`/fridges/${props.fridge.id}`}
+        onClick={handleFridgeClick}
       >
         <Divider horizontal>fridge contents</Divider>
-        <Card.Description>
-          <FoodTypesGraph fridge={props.fridge}/>
-          <Divider horizontal>food within 48hrs of expiring</Divider>
-          <br/>
-          <Progress progress percent={calculateAmountOfFoodExpiringIn48Hrs()} color='violet' />
-        </Card.Description>
+        <a>
+          <Card.Description>
+            <FoodTypesGraph fridge={props.fridge}/>
+            <Divider horizontal>food within 48hrs of expiring</Divider>
+            <br/>
+            <Progress progress percent={calculateAmountOfFoodExpiringIn48Hrs()} color='violet' />
+          </Card.Description>
+        </a>
       </Card.Content>
     </Card>
   )

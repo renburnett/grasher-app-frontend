@@ -9,7 +9,6 @@ const FridgesContainer = (props) => {
   const [state, actions] = useGlobal();
 
   const displayFridges = () => {
-    console.log('state', state)
     return state.currentUsersFridges.map((fridge, idx) => {
       return <Fridge handleFridgeDelete={props.handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />
     })

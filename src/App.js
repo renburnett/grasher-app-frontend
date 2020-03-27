@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useGlobal from './util/store';
 import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -21,7 +21,6 @@ const App  = () => {
   const setUserToLocalStorage = (user) => {
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
-
   const setCurrentUsersFridgesToLocalStorage = (usersFridges) => {
     localStorage.setItem('currentUsersFridges', JSON.stringify(usersFridges))
   }
@@ -30,7 +29,6 @@ const App  = () => {
     setUserToLocalStorage(user);
     actions.setCurrentUser(user);
   }
-
   const updateCurrentUsersFridges = async () => {
     let userId = -1;
     if (state.currentUser) {
@@ -41,7 +39,7 @@ const App  = () => {
     const res = await fetch(CONSTANTS.FRIDGES_URL);
     const fridges = await res.json();
     const usersFridges = fridges.filter(fridge => fridge.user_id === userId);
-    
+
     setCurrentUsersFridgesToLocalStorage(usersFridges);
     actions.setCurrentUsersFridges(usersFridges);
   }
@@ -69,18 +67,14 @@ const App  = () => {
     }
   }
 
-  const handleLoginSubmit = (props) => {
-    fetch(CONSTANTS.USERS_URL)
-    .then(res => res.json())
-    .then(users => {
-      const foundUser = users.find(user => user.email === state.email);
-      setUserToLocalStorage(foundUser);
-      actions.setCurrentUser(foundUser);
-      updateCurrentUsersFridges(); //TODO: does this work?
-    })
-    .then(() => {
-      props.history.push("/")
-    });
+  const handleLoginSubmit = async (props) => {
+    const res = await fetch(CONSTANTS.USERS_URL);
+    const users = await res.json();
+    const foundUser = users.find(user => user.email === state.email);
+    setUserToLocalStorage(foundUser);
+    actions.setCurrentUser(foundUser);
+    updateCurrentUsersFridges();
+    await props.history.push("/");
   }
 
   //new fridge handlers / helpers
