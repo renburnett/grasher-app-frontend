@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { createHook } from 'react-global-hook';
-import Store from './util/store';
+import useGlobal from '../util/store';
 import FoodItem from '../components/FoodItem';
 import SecurityHOC from '../HOCs/SecurityHOC';
 import FridgeLoadHOC from '../HOCs/FridgeLoadHOC';
@@ -10,16 +9,8 @@ import { Card, Grid } from 'semantic-ui-react';
 import CONSTANTS from '../constants';
 let moment = require('moment');
 
-const useStore = createHook(Store);
-
 const FridgeDetail = (props) => {
-  const [state, actions] = useStore([
-    'currentUsersFridges',
-    'currentFridge',
-    'recipes',
-    'newFood',
-    'foodItemsExpiringIn48Hrs'
-  ]);
+  const [state, actions] = useGlobal();
 
   const setCurrentFridge = () => {
     if (localStorage.currentFridge !== "undefined" && localStorage.currentFridge) {

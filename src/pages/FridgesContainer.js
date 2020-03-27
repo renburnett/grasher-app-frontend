@@ -1,35 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Fridge from '../components/Fridge';
 import SecurityHOC from '../HOCs/SecurityHOC';
 import { Grid, Card } from 'semantic-ui-react'
 import NewFridgeForm from '../components/NewFridgeForm';
+import useGlobal from '../util/store';
 
-class FridgesContainer extends Component {
+const FridgesContainer = (props) => {
+  const [state, actions] = useGlobal();
 
-  componentDidMount() {
-    this.props.fetchUsersFridges()
-  }
-
-  displayFridges = () => {
-    return this.props.currentUsersFridges.map((fridge, idx) => {
-      return <Fridge handleFridgeDelete={this.props.handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />
+  const displayFridges = () => {
+    console.log('state', state)
+    return state.currentUsersFridges.map((fridge, idx) => {
+      return <Fridge handleFridgeDelete={props.handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />
     })
   }
 
-  render() {
-    return (
-      <Grid columns={3} stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
-        <Grid.Row>
-          <Grid.Column style={{ maxWidth: '100vh'}}>
-            <NewFridgeForm handleFridgeFormSubmit={this.props.handleFridgeFormSubmit} handleFridgeFormChange={this.props.handleFridgeFormChange} />
-            <Card.Group centered>
-              {this.displayFridges()}
-            </Card.Group>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    )
-  }
+  return (
+    <Grid columns={3} stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+      <Grid.Row>
+        <Grid.Column style={{ maxWidth: '100vh'}}>
+          <NewFridgeForm handleFridgeFormSubmit={props.handleFridgeFormSubmit} handleFridgeFormChange={props.handleFridgeFormChange} />
+          <Card.Group centered>
+            {displayFridges()}
+          </Card.Group>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  )
 }
 
 export default SecurityHOC(FridgesContainer);

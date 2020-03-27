@@ -1,4 +1,5 @@
-import {createStore } from 'react-global-hook';
+import React from 'react';
+import globalHook from 'use-global-hook';
 
 const initialState = {
   email: '',
@@ -42,7 +43,7 @@ const actions = {
   },
 }
 
-const Store = createStore(initialState, actions)
+const useGlobal = globalHook(React, initialState, actions);
 
-export default Store; 
+export default useGlobal; 
 

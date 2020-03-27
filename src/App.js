@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { createHook } from 'react-global-hook';
-import Store from './util/store';
+import useGlobal from './util/store';
 import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
@@ -11,46 +10,40 @@ import Signup from './pages/Signup';
 import CONSTANTS from './constants';
 require('dotenv').config();
 
-const useStore = createHook(Store);
-
 //TODO: MODAL ON FRIDGE DETAIL PAGE TO TELL WHEN EXXPIRED
 //TODO: azure function that fires daily to seed rails db
 //TODO: If its open calculate new dates (open boolean) (data source?)
 //Twilio API to send alert to phone for expiring food
 
 const App  = () => {
-  const [state, actions] = useStore([
-    'email', 
-    'password', 
-    'currentUser',
-    'newFridge',
-    'currentUsersFridges',
-    'foodItemsExpiringIn48Hrs',
-  ])
+  const [state, actions] = useGlobal();
 
-  const fetchAllFridges = async () => {
-    const res = await fetch(CONSTANTS.FRIDGES_URL);
-    return await res.json();
+  const setUserToLocalStorage = (user) => {
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
-  const setCurrentUsersFridges = () => {
+  const setCurrentUsersFridgesToLocalStorage = (usersFridges) => {
+    localStorage.setItem('currentUsersFridges', JSON.stringify(usersFridges))
+  }
+
+  const updateCurrentUser = (user) => {
+    setUserToLocalStorage(user);
+    actions.setCurrentUser(user);
+  }
+
+  const updateCurrentUsersFridges = async () => {
     let userId = -1;
     if (state.currentUser) {
       userId = state.currentUser.id;
     } else if (localStorage.currentUser) {
-      userId = JSON.parse(localStorage.currentUser).id
+      userId = JSON.parse(localStorage.currentUser).id;
     }
-    const currentUsersFoundFridges = fetchAllFridges.filter(fridge => fridge.user_id === userId)
-    localStorage.setItem('currentUsersFridges', JSON.stringify(currentUsersFoundFridges))
-    actions.setCurrentUsersFridges(currentUsersFoundFridges);
-  }
-
-  useEffect(() => {
-    setCurrentUsersFridges();
-  });
-
-  const setUserToLocalStorage = (user) => {
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    const res = await fetch(CONSTANTS.FRIDGES_URL);
+    const fridges = await res.json();
+    const usersFridges = fridges.filter(fridge => fridge.user_id === userId);
+    
+    setCurrentUsersFridgesToLocalStorage(usersFridges);
+    actions.setCurrentUsersFridges(usersFridges);
   }
 
   const handleLogout = () => {
@@ -83,6 +76,7 @@ const App  = () => {
       const foundUser = users.find(user => user.email === state.email);
       setUserToLocalStorage(foundUser);
       actions.setCurrentUser(foundUser);
+      updateCurrentUsersFridges(); //TODO: does this work?
     })
     .then(() => {
       props.history.push("/")
@@ -95,6 +89,10 @@ const App  = () => {
     actions.setNewFridge({...state.newFridge, [name]: value}) //computed property syntax i.e. [dynamic_key]:
   }
   
+  const addNewFridgeToUserStore = (fridge) => {
+    actions.setCurrentUsersFridges([...state.currentUsersFridges, fridge])
+  }
+
   const handleFridgeFormSubmit = () => {
     const config = {
       method: 'POST',
@@ -110,6 +108,10 @@ const App  = () => {
     .then(fridge => addNewFridgeToUserStore(fridge))
   }
 
+  const removeFridgeFromCurrentUserStore = (fridgeId) => {
+    actions.setCurrentUsersFridges(state.currentUsersFridges.filter(fridge => fridge.id !== fridgeId));
+  }
+
   const handleFridgeDelete = (e, val) => {
     const { fridge_id } = val;
 
@@ -122,19 +124,6 @@ const App  = () => {
     }
     fetch(CONSTANTS.FRIDGES_URL + '/' + fridge_id, config)
     .then(removeFridgeFromCurrentUserStore(fridge_id))
-  }
-
-  const addNewFridgeToUserStore = (fridge) => {
-    setCurrentUsersFridges([...state.currentUsersFridges, fridge])
-  }
-
-  const removeFridgeFromCurrentUserStore = (fridgeId) => {
-    setCurrentUsersFridges(state.currentUsersFridges.filter(fridge => fridge.id !== fridgeId));
-  }
-
-  const updateCurrentUser = (user) => {
-    setUserToLocalStorage(user);
-    actions.setCurrentUser(user);
   }
 
   return (
