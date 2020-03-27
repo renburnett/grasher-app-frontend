@@ -89,12 +89,7 @@ const FridgeDetail = (props) => {
   }
 
   const removeFoodFromCurrentFridge = (foodItem) => {
-    console.log(state.currentFridge)
-
-    const newFrg = { ...state.currentFridge, food_items: state.currentFridge.food_items.filter(food => food.id !== foodItem.id) };
-
-    //setCurrentFridge()
-    console.log(newFrg)
+    actions.setCurrentFridge({ ...state.currentFridge, food_items: state.currentFridge.food_items.filter(food => food.id !== foodItem.id) });
   }
 
   const handleFoodItemDelete = (e, foodItem) => {
