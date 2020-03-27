@@ -1,4 +1,6 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { createHook } from 'react-global-hook';
+import Store from './util/store';
 import FoodItem from '../components/FoodItem';
 import SecurityHOC from '../HOCs/SecurityHOC';
 import FridgeLoadHOC from '../HOCs/FridgeLoadHOC';
@@ -8,16 +10,34 @@ import { Card, Grid } from 'semantic-ui-react';
 import CONSTANTS from '../constants';
 let moment = require('moment');
 
+const useStore = createHook(Store);
+
 const FridgeDetail = (props) => {
-  const [foodItemsExpiringIn48Hrs, setFoodItemsExpiringIn48Hrs] = useState([]);
-  const [recipes, setRecipes] = useState({});
-  const [newFood, setNewFood] = useState({ name: '', is_drink: false, price: 0.00, food_type: 'fruit', expiration_date: '11/12/2089', fridge_id: -1, quantity: 0 });
+  const [state, actions] = useStore([
+    'currentUsersFridges',
+    'currentFridge',
+    'recipes',
+    'newFood',
+    'foodItemsExpiringIn48Hrs'
+  ]);
+
+  const setCurrentFridge = () => {
+    if (localStorage.currentFridge !== "undefined" && localStorage.currentFridge) {
+      actions.setCurrentFridge(JSON.parse(localStorage.currentFridge));
+    } else if (props) {
+      const matchedFridge = state.currentUsersFridges.find(fridge => fridge.id === Number(props.match.params.fridge_id));
+      localStorage.setItem('currentFridge', JSON.stringify(matchedFridge));
+      actions.setCurrentFridge(matchedFridge);
+    } else { 
+      actions.setCurrentFridge({ name: '', drink_capacity: 0, food_capacity: 0, total_items_value: 0, food_items: [] });
+    }
+  }
 
   useEffect(() => {
-    props.setCurrentFridgeHelper(props)
+    setCurrentFridge();
   })
 
-  //food item add form handlers / helpers
+   //food item add form handlers / helpers
   const isCurrentFridgeFoodOrDrinkFull = () => {
     const foodOrDrinkFull = {
       food: {full: false, total: 0}, 
@@ -26,17 +46,17 @@ const FridgeDetail = (props) => {
     let totalFood = 0;
     let totalDrink = 0;
 
-    props.currentFridge.food_items.forEach((food) => {
+    state.currentFridge.food_items.forEach((food) => {
       if (food.is_drink) {
         totalDrink += 1;
       } else if (!food.is_drink) {
         totalFood += 1;
       }
     })
-    if (totalFood >= props.currentFridge.food_capacity) {
+    if (totalFood >= state.currentFridge.food_capacity) {
       foodOrDrinkFull.foodFull = true;
     }
-    if (totalDrink >= props.currentFridge.drink_capacity) {
+    if (totalDrink >= state.currentFridge.drink_capacity) {
       foodOrDrinkFull.drinkFull = true;
     }
     foodOrDrinkFull.food.total = totalFood;
@@ -46,7 +66,7 @@ const FridgeDetail = (props) => {
 
   const handleFoodFormSubmit = () => {
     const fridgeCapacity = isCurrentFridgeFoodOrDrinkFull();
-    const newFood_quantity = Number(newFood.quantity);
+    const newFood_quantity = Number(state.newFood.quantity);
 
     const config = {
       method: 'POST',
@@ -54,19 +74,19 @@ const FridgeDetail = (props) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newFood),
+      body: JSON.stringify(state.newFood),
     }
     //check to ensure the newly submitted item wont go over our fridges food capacity
-    if (newFood.is_drink) {
-      if ((!fridgeCapacity.drink.full) && (fridgeCapacity.drink.total + newFood_quantity) <= props.currentFridge.drink_capacity) {
+    if (state.newFood.is_drink) {
+      if ((!fridgeCapacity.drink.full) && (fridgeCapacity.drink.total + newFood_quantity) <= state.currentFridge.drink_capacity) {
         fetch(CONSTANTS.FOOD_ITEMS_URL, config)
         .then(res => res.json())
         .then(foodItem => addFoodToCurrentFridge(foodItem))
       } else {
         console.log("ERROR: Current fridge is at capacity")
       }
-    } else if (!newFood.is_drink) {
-      if ((!fridgeCapacity.food.full) && (fridgeCapacity.food.total + newFood_quantity) <= props.currentFridge.food_capacity) {
+    } else if (!state.newFood.is_drink) {
+      if ((!fridgeCapacity.food.full) && (fridgeCapacity.food.total + newFood_quantity) <= state.currentFridge.food_capacity) {
         fetch(CONSTANTS.FOOD_ITEMS_URL, config)
         .then(res => res.json())
         .then(foodItem => addFoodToCurrentFridge(foodItem))
@@ -83,18 +103,23 @@ const FridgeDetail = (props) => {
     const {name, value, checked} = val;
 
     if (name === 'is_drink') {
-      setNewFood({ ...newFood, [name]: checked })
+      actions.setNewFood({ ...state.newFood, [name]: checked })
     } else {
-      setNewFood({ ...newFood, [name]: value })
+      actions.setNewFood({ ...state.newFood, [name]: value })
     }
   }
 
   const addFoodToCurrentFridge = (foodItem) => {
-    props.setCurrentFridge({...props.currentFridge, food_items: [...props.currentFridge.food_items, foodItem]}); //TODO: check syntax
+    actions.setCurrentFridge({...state.currentFridge, food_items: [...state.currentFridge.food_items, foodItem]}); //TODO: check syntax
   }
 
   const removeFoodFromCurrentFridge = (foodItem) => {
-    props.setCurrentFridge({...props.currentFridge, food_items: props.currentFridge.food_items.filter(food => food.id !== foodItem.id)})
+    console.log(state.currentFridge)
+
+    const newFrg = { ...state.currentFridge, food_items: state.currentFridge.food_items.filter(food => food.id !== foodItem.id) };
+
+    //setCurrentFridge()
+    console.log(newFrg)
   }
 
   const handleFoodItemDelete = (e, foodItem) => {
@@ -128,16 +153,16 @@ const FridgeDetail = (props) => {
   }
 
   const getRecipesForFoodItemsNearExpiry = () => {
-    const foodItemsNearExpiry = props.currentFridge.food_items
+    const foodItemsNearExpiry = state.currentFridge.food_items
       .filter(foodItem => calculateTimeUntilExpiry(foodItem.expiration_date, false) <= 48)
       .map(foodItem => foodItem.name)
       .join(',');
-    setFoodItemsExpiringIn48Hrs(foodItemsNearExpiry);
+      actions.setFoodItemsExpiringIn48Hrs(foodItemsNearExpiry);
     fetchRecipes(); //put in .then() ???  add to useEffect() ???
   }
 
   const displayFoodItems = () => {
-    return props.currentFridge.food_items.map((foodItem, id) => {
+    return state.currentFridge.food_items.map((foodItem, id) => {
       return <FoodItem handleFoodItemDelete={handleFoodItemDelete} foodItem={foodItem} key={id} />
     })
   }
@@ -151,9 +176,9 @@ const FridgeDetail = (props) => {
         }
       }
 
-    fetch(CONSTANTS.SPOONACULAR_URL + `/recipes/findByIngredients?ingredients=${foodItemsExpiringIn48Hrs}&number=3`, config)
+    fetch(CONSTANTS.SPOONACULAR_URL + `/recipes/findByIngredients?ingredients=${state.foodItemsExpiringIn48Hrs}&number=3`, config)
     .then(res => res.json())
-    .then(recipes => setRecipes(recipes))
+    .then(recipes => actions.setRecipes(recipes))
     .catch(error => console.log(error))
   }
 
@@ -163,13 +188,13 @@ const FridgeDetail = (props) => {
         <FoodDetailsForm
           handleFoodFormSubmit={handleFoodFormSubmit}
           handleFoodFormChange={handleFoodFormChange}
-          currentFridge={props.currentFridge}
+          currentFridge={state.currentFridge}
         />
         <FoodDetailsGraphs 
-          currentFridge={props.currentFridge}
+          currentFridge={state.currentFridge}
           calculateTimeUntilExpiry={calculateTimeUntilExpiry}
           getRecipesForFoodItemsNearExpiry={getRecipesForFoodItemsNearExpiry}
-          recipes={recipes}
+          recipes={state.recipes}
         />
       </>
     )
