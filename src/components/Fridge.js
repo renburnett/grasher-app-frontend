@@ -54,6 +54,7 @@ const Fridge = (props) => {
   const handleFridgeClick = async () => {
     history.push(`/fridges/${props.fridge.id}`);
     updateCurrentFridge();
+    actions.setNewFood({...state.newFood, fridge_id: props.fridge.id})
   }
 
   return (

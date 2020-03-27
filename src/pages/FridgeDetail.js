@@ -133,7 +133,7 @@ const FridgeDetail = (props) => {
       .map(foodItem => foodItem.name)
       .join(',');
       actions.setFoodItemsExpiringIn48Hrs(foodItemsNearExpiry);
-    fetchRecipes(); //put in .then() ???  add to useEffect() ???
+    fetchRecipes();
   }
 
   const displayFoodItems = () => {
