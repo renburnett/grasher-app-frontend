@@ -7,7 +7,7 @@ const initialState = {
   currentUser: localStorage.currentUser ? JSON.parse(localStorage.currentUser) : null,
   currentFridge: localStorage.currentFridge ? JSON.parse(localStorage.currentFridge) : null,
   currentUsersFridges: localStorage.currentUsersFridges ? JSON.parse(localStorage.currentUsersFridges) : [], //fetch and filter initial fridges?
-  newFridge: { name: '', user_id: -1, food_capacity: 0, drink_capacity: 0, is_full: false, total_items_value: 0 },
+  newFridge: null,
   foodItemsExpiringIn48Hrs: [],
   recipes: [],
   newFood: { name: '', is_drink: false, price: 0.00, food_type: 'fruit', expiration_date: '11/12/2089', fridge_id: -1, quantity: 0 },

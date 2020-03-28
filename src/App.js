@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import FridgeDetail from './pages/FridgeDetail';
 import Account from './pages/Account';
 import FridgesContainer from './pages/FridgesContainer';
+import NewFridgeForm from './pages/NewFridgeForm';
 import Signup from './pages/Signup';
 import CONSTANTS from './constants';
 require('dotenv').config();
@@ -77,63 +78,20 @@ const App  = () => {
     await props.history.push("/");
   }
 
-  //new fridge handlers / helpers
-  const handleFridgeFormChange = (e, val) => {
-    const { name, value } = val;
-    actions.setNewFridge({...state.newFridge, [name]: value}) //computed property syntax i.e. [dynamic_key]:
-  }
-  
-  const addNewFridgeToUserStore = (fridge) => {
-    actions.setCurrentUsersFridges([...state.currentUsersFridges, fridge])
-  }
-
-  const handleFridgeFormSubmit = () => {
-    const config = {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({...state.newFridge, user_id: state.currentUser.id}),
-    }
-
-    fetch(CONSTANTS.FRIDGES_URL, config)
-    .then(res => res.json())
-    .then(fridge => addNewFridgeToUserStore(fridge))
-  }
-
-  const removeFridgeFromCurrentUserStore = (fridgeId) => {
-    actions.setCurrentUsersFridges(state.currentUsersFridges.filter(fridge => fridge.id !== fridgeId));
-  }
-
-  const handleFridgeDelete = (e, val) => {
-    const { fridge_id } = val;
-
-    const config = {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    }
-    fetch(CONSTANTS.FRIDGES_URL + '/' + fridge_id, config)
-    .then(removeFridgeFromCurrentUserStore(fridge_id))
-  }
-
   return (
     <div className="App">
       <Router>
         <Navbar handleLogout={handleLogout} />
-        <Route exact path='/' render={ () => <FridgesContainer fetchUsersFridges={state.fetchUsersFridges} handleFridgeDelete={handleFridgeDelete} handleFridgeFormChange={handleFridgeFormChange} handleFridgeFormSubmit={handleFridgeFormSubmit} fridgesReady={state.currentUsersFridges.length > 0} currentUsersFridges={state.currentUsersFridges} loggedIn={state.currentUser} /> }/>
-        <Route exact path='/fridges' render={ props => <FridgesContainer {...props} fetchUsersFridges={state.fetchUsersFridges} handleFridgeDelete={handleFridgeDelete} handleFridgeFormChange={handleFridgeFormChange} handleFridgeFormSubmit={handleFridgeFormSubmit} fridgesReady={state.currentUsersFridges.length > 0} currentUsersFridges={state.currentUsersFridges} loggedIn={state.currentUser} /> }/>
-        {/* </Router>/<Route exact path='/login'><Route/> */}
+        <Route exact path='/' render={ () => <FridgesContainer fetchUsersFridges={state.fetchUsersFridges} fridgesReady={state.currentUsersFridges.length > 0} currentUsersFridges={state.currentUsersFridges} loggedIn={state.currentUser} /> }/>
+        <Route exact path='/fridges' render={ props => <FridgesContainer {...props} fridgesReady={state.currentUsersFridges.length > 0} currentUsersFridges={state.currentUsersFridges} loggedIn={state.currentUser} /> }/>
         <Route exact path='login'>
           { state.currentUser ? <Redirect to='/fridges'/> : props => <Login {...props} handleLoginSubmit={(props) => handleLoginSubmit(props)} handleLoginChange={handleLoginChange} email={state.email} password={state.password} currentUser={state.currentUser}/> }
         </Route>
         <Route exact path='/account' render={ props => <Account {...props} updateCurrentUser={updateCurrentUser} loggedIn={state.currentUser} currentUser={state.currentUser}/> }/>
         <Route exact path='/signup' render={ props => <Signup {...props} updateCurrentUser={updateCurrentUser} /> }/>
+        <Route exact path='/new_fridge' render={ props => <NewFridgeForm {...props} /> }/>
         <Route 
-          path='/fridges/:fridge_id' 
+          path='/fridges/:fridge_id'
           render={ props => {
             return <FridgeDetail {...props} loggedIn={state.currentUser} />
           } }/>

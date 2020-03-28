@@ -40,6 +40,15 @@ class Navbar extends Component {
         </Menu.Item>
         <Menu.Item
           as={Link}
+          to='/new_fridge'
+          name='new_fridge'
+          active={activeItem === 'new_fridge'}
+          onClick={this.handleNavItemClick}
+        >
+          New Fridge
+        </Menu.Item>
+        <Menu.Item
+          as={Link}
           to='/account'
           name='account'
           active={activeItem === 'account'}
