@@ -22,9 +22,6 @@ const App  = () => {
   const setUserToLocalStorage = (user) => {
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
-  const setCurrentUsersFridgesToLocalStorage = (usersFridges) => {
-    localStorage.setItem('currentUsersFridges', JSON.stringify(usersFridges))
-  }
 
   const updateCurrentUser = (user) => {
     setUserToLocalStorage(user);
@@ -41,19 +38,12 @@ const App  = () => {
     const fridges = await res.json();
     const usersFridges = fridges.filter(fridge => fridge.user_id === userId);
 
-    setCurrentUsersFridgesToLocalStorage(usersFridges);
     actions.setCurrentUsersFridges(usersFridges);
   }
 
   const handleLogout = () => {
     if (localStorage.currentUser) {
       localStorage.removeItem('currentUser');
-    }
-    if (localStorage.currentUsersFridges) {
-      localStorage.removeItem('currentUsersFridges');
-    }
-    if (localStorage.currentFridge) {
-      localStorage.removeItem('currentFridge');
     }
     actions.setCurrentUser(null);
   }

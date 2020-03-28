@@ -2,7 +2,6 @@ import React from 'react';
 import Fridge from '../components/Fridge';
 import SecurityHOC from '../HOCs/SecurityHOC';
 import { Grid, Card } from 'semantic-ui-react'
-import NewFridgeForm from './NewFridgeForm';
 import useGlobal from '../util/store';
 import CONSTANTS from '../constants';
 

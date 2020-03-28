@@ -47,7 +47,6 @@ const Fridge = (props) => {
 
   const updateCurrentFridge = () => {
     const matchedFridge = state.currentUsersFridges.find(fridge => fridge.id === props.fridge.id);
-    localStorage.setItem('currentFridge', JSON.stringify(matchedFridge));
     actions.setCurrentFridge(matchedFridge);
   }
 

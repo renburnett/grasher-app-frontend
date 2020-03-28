@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { VictoryBar, VictoryChart, VictoryPie, VictoryLabel } from 'victory';
 import CONSTANTS from '../constants';
 import { Card, Header, Divider, Segment, Statistic } from 'semantic-ui-react';
