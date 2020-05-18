@@ -1,49 +1,41 @@
 import React from 'react';
-import globalHook from 'use-global-hook';
-
-const initialState = {
-  email: '',
-  password: '',
-  currentUser: localStorage.currentUser ? JSON.parse(localStorage.currentUser) : null,
-  currentFridge: null,
-  currentUsersFridges: [], //fetch and filter initial fridges?
-  newFridge: {},
-  foodItemsExpiringIn48Hrs: [],
-  recipes: [],
-  newFood: { name: '', is_drink: false, price: 0.00, food_type: 'fruit', expiration_date: '11/12/2089', fridge_id: -1, quantity: 0 },
-}
+import useGlobalHook from 'use-global-hook';
+import initialState from './initalState';
 
 const actions = {
+  setJwt: (store, newJwt) => {
+    store.setState({ jwt: newJwt });
+  },
   setEmail: (store, newEmail) => {
-    store.setState({email: newEmail});
+    store.setState({ email: newEmail });
   },
   setPassword: (store, newPassword) => {
-    store.setState({password: newPassword});
+    store.setState({ password: newPassword });
   },
   setCurrentUser: (store, newCurrentUser) => {
-    store.setState({currentUser: newCurrentUser});
+    store.setState({ currentUser: newCurrentUser });
   },
   setCurrentFridge: (store, newCurrentFridge) => {
-    store.setState({currentFridge: newCurrentFridge});
+    store.setState({ currentFridge: newCurrentFridge });
   },
   setNewFridge: (store, newFridge) => {
-    store.setState({email: newFridge});
+    store.setState({ email: newFridge });
   },
   setCurrentUsersFridges: (store, newCurrentUsersFridges) => {
-    store.setState({currentUsersFridges: newCurrentUsersFridges});
+    store.setState({ currentUsersFridges: newCurrentUsersFridges });
   },
   setFoodItemsExpiringIn48Hrs: (store, newFoodItemsExpiringIn48Hrs) => {
-    store.setState({foodItemsExpiringIn48Hrs: newFoodItemsExpiringIn48Hrs});
+    store.setState({ foodItemsExpiringIn48Hrs: newFoodItemsExpiringIn48Hrs });
   },
   setRecipes: (store, newRecipes) => {
-  store.setState({recipes: newRecipes});
+    store.setState({ recipes: newRecipes });
   },
   setNewFood: (store, newNewFood) => {
-    store.setState({newFood: newNewFood});
+    store.setState({ newFood: newNewFood });
   },
 }
 
-const useGlobal = globalHook(React, initialState, actions);
+const useGlobal = useGlobalHook(React, initialState, actions);
 
-export default useGlobal; 
+export default useGlobal;
 
