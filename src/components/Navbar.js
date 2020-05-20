@@ -13,8 +13,8 @@ const Navbar = (props) => {
 
   return (
     <Menu inverted>
-      <Menu.Item 
-        as={Link} 
+      <Menu.Item
+        as={Link}
         to='/'
         name='home'
         active={activeItem === 'home'}
@@ -30,6 +30,15 @@ const Navbar = (props) => {
         onClick={handleNavItemClick}
       >
         My Fridges
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to='/new_fridge'
+        name='new_fridge'
+        active={activeItem === 'new_fridge'}
+        onClick={handleNavItemClick}
+      >
+        Add Fridge
       </Menu.Item>
       <Menu.Item
         as={Link}

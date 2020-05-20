@@ -20,12 +20,17 @@ require('dotenv').config();
 const App = () => {
   const [state, actions] = useGlobal();
 
-  const setUserToLocalStorage = (user) => {
+  const setUserAndJwtToLocalStorage = (user = state.currentUser, jwt = state.jwt) => {
     localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('jwt', JSON.stringify(jwt));
+  }
+
+  const setUsersFridgesToLocalStorage = (fridges) => {
+    localStorage.setItem('currentUsersFridges', JSON.stringify(fridges));
   }
 
   const updateCurrentUser = (user) => {
-    setUserToLocalStorage(user);
+    setUserAndJwtToLocalStorage(user);
     actions.setCurrentUser(user);
   }
 
@@ -59,13 +64,13 @@ const App = () => {
       console.log(data);
       const { user, jwt } = data;
 
-      setUserToLocalStorage(user);
+      setUserAndJwtToLocalStorage(user, jwt);
       await actions.setCurrentUser(user);
       await actions.setJwt(jwt);
 
       const response = await fetchCurrentUsersFridges(user.id, jwt);
-      console.log(response.data.fridges)
       await actions.setCurrentUsersFridges(response.data.fridges);
+      setUsersFridgesToLocalStorage(response.data.fridges)
 
       await history.push('/');
     } catch (error) {
@@ -74,11 +79,15 @@ const App = () => {
   }
 
   const handleLogout = () => {
-    if (localStorage.currentUser) {
-      localStorage.removeItem('currentUser');
-    }
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('currentUsersFridges');
+    localStorage.removeItem('currentFridge');
+
     actions.setCurrentUser(null);
-    actions.setJwt(undefined)
+    actions.setJwt(null)
+    actions.setCurrentUsersFridges([]);
+    actions.setCurrentFridge(null);
   }
   return (
     <div className="App">

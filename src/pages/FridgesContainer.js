@@ -20,11 +20,11 @@ const FridgesContainer = (props) => {
     const res = await fetch(CONSTANTS.FRIDGES_URL + '/' + fridge_id, config);
     const fridgeId = await res.json().id;
     actions.setCurrentUsersFridges(state.currentUsersFridges.filter(fridge => fridge.id !== fridgeId));
-    //TODO: fix this!!!!!!!!!!
+    props.setUsersFridgesToLocalStorage(state.currentUsersFridges);
   }
 
   const displayFridges = () => {
-    console.log('state.currentUser', state.currentUsersFridges)
+    console.log('state.currentUsersFridges', state.currentUsersFridges)
     return state.currentUsersFridges.map((fridge, idx) => {
       return <Fridge handleFridgeDelete={handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />
     })
