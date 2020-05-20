@@ -1,10 +1,10 @@
 export default {
-    jwt: undefined,
+    jwt: localStorage.jwt ? JSON.parse(localStorage.jwt) : null,
     email: '',
     password: '',
     currentUser: localStorage.currentUser ? JSON.parse(localStorage.currentUser) : null,
-    currentFridge: null,
-    currentUsersFridges: [],
+    currentFridge: localStorage.currentFridge ? JSON.parse(localStorage.currentFridge) : null,
+    currentUsersFridges: localStorage.currentUsersFridges ? JSON.parse(localStorage.currentUsersFridges) : [],
     newFridge: {},
     foodItemsExpiringIn48Hrs: [],
     recipes: [],

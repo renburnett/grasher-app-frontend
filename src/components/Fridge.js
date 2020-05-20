@@ -14,11 +14,11 @@ const Fridge = (props) => {
 
   const shuffleIcon = () => {
     if (props.idx % 3 === 0) {
-      return <Image size="big" src={fridge_icon1}/>
+      return <Image size="big" src={fridge_icon1} />
     } else if (props.idx % 3 === 1) {
-      return <Image size="big" src={fridge_icon2}/>
+      return <Image size="big" src={fridge_icon2} />
     } else if (props.idx % 3 === 2) {
-      return <Image size="big" src={fridge_icon3}/>
+      return <Image size="big" src={fridge_icon3} />
     }
   }
 
@@ -26,7 +26,7 @@ const Fridge = (props) => {
     const now = moment();
     const expiry = moment(expiryDate);
     const timeTilExpiry = moment.duration(expiry.diff(now)).asHours();
-    
+
     if (timeTilExpiry <= 48) {
       return true;
     } else {
@@ -45,27 +45,32 @@ const Fridge = (props) => {
     return percentage;
   }
 
+  const setCurrentFridgeToLocalStorage = (currentFridge) => {
+    localStorage.setItem('currentFridge', JSON.stringify(currentFridge));
+  }
+
   const updateCurrentFridge = () => {
     const matchedFridge = state.currentUsersFridges.find(fridge => fridge.id === props.fridge.id);
     actions.setCurrentFridge(matchedFridge);
+    setCurrentFridgeToLocalStorage(matchedFridge);
   }
 
   const handleFridgeClick = async () => {
     history.push(`/fridges/${props.fridge.id}`);
     updateCurrentFridge();
-    actions.setNewFood({...state.newFood, fridge_id: props.fridge.id})
+    actions.setNewFood({ ...state.newFood, fridge_id: props.fridge.id })
   }
 
   return (
-    <Card style={{minWidth: '40vh'}} >
+    <Card style={{ minWidth: '40vh' }} >
       <Card.Content>
         <Grid textAlign='center' columns={3} verticalAlign='middle'>
           <Grid.Row>
             <Grid.Column>
-              <Image size='mini'>{ shuffleIcon() }</Image>
+              <Image size='mini'>{shuffleIcon()}</Image>
             </Grid.Column>
             <Grid.Column>
-              <Header as='h3' color='blue'>{ props.fridge.name }</Header>
+              <Header as='h3' color='blue'>{props.fridge.name}</Header>
             </Grid.Column>
             <Grid.Column>
               <Button fridge_id={props.fridge.id} icon='x' size='medium' onClick={props.handleFridgeDelete} />
@@ -79,9 +84,9 @@ const Fridge = (props) => {
         <Divider horizontal>fridge contents</Divider>
         <a>
           <Card.Description>
-            <FoodTypesGraph fridge={props.fridge}/>
+            <FoodTypesGraph fridge={props.fridge} />
             <Divider horizontal>food within 48hrs of expiring</Divider>
-            <br/>
+            <br />
             <Progress progress percent={calculateAmountOfFoodExpiringIn48Hrs()} color='violet' />
           </Card.Description>
         </a>
