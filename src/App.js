@@ -29,13 +29,20 @@ const App = () => {
     actions.setCurrentUser(user);
   }
 
-  const updateCurrentUsersFridges = async () => {
-    const response = await axios.get(CONSTANTS.BASE_API_URL + CONSTANTS.FRIDGES_URL);
-    actions.setCurrentUsersFridges(response.data);
+  const fetchCurrentUsersFridges = async (userId, jwt) => {
+    const axiosConfig = {
+      Accept: 'application/json',
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json',
+    };
+    const response = await axios.get(
+      CONSTANTS.BASE_API_URL + `/users/${userId}/fridges`,
+      axiosConfig,
+    );
+    return response;
   }
 
-  const handleLoginChange = (e, val) => {
-    const { name, value } = val;
+  const handleLoginChange = (e, { name, value }) => {
     if (name === 'email') {
       actions.setEmail(value);
     } else if (name === 'password') {
@@ -45,19 +52,25 @@ const App = () => {
 
   const handleLoginSubmit = async ({ history }, { email, password }) => {
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         CONSTANTS.BASE_API_URL + CONSTANTS.USER_LOGIN_URL,
         { user: { email, password } },
       );
-      setUserToLocalStorage(response.data.user);
-      await actions.setCurrentUser(response.data.user);
-      await actions.setJwt(response.data.jwt);
+      console.log(data);
+      const { user, jwt } = data;
+
+      setUserToLocalStorage(user);
+      await actions.setCurrentUser(user);
+      await actions.setJwt(jwt);
+
+      const response = await fetchCurrentUsersFridges(user.id, jwt);
+      console.log(response.data.fridges)
+      await actions.setCurrentUsersFridges(response.data.fridges);
+
+      await history.push('/');
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Errrrror:', error);
     }
-    setUserToLocalStorage(state.currentUser);
-    updateCurrentUsersFridges();
-    await history.push('/');
   }
 
   const handleLogout = () => {

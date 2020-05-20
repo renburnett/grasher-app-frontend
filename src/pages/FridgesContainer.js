@@ -8,7 +8,8 @@ import CONSTANTS from '../constants';
 const FridgesContainer = (props) => {
   const [state, actions] = useGlobal();
 
-  const handleFridgeDelete = async (e, {fridge_id}) => {
+  const handleFridgeDelete = async (e, { fridge_id }) => {
+    //TODO: fix this!!!!!!!!!!
     const config = {
       method: 'DELETE',
       headers: {
@@ -19,9 +20,11 @@ const FridgesContainer = (props) => {
     const res = await fetch(CONSTANTS.FRIDGES_URL + '/' + fridge_id, config);
     const fridgeId = await res.json().id;
     actions.setCurrentUsersFridges(state.currentUsersFridges.filter(fridge => fridge.id !== fridgeId));
+    //TODO: fix this!!!!!!!!!!
   }
 
   const displayFridges = () => {
+    console.log('state.currentUser', state.currentUsersFridges)
     return state.currentUsersFridges.map((fridge, idx) => {
       return <Fridge handleFridgeDelete={handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />
     })
@@ -30,7 +33,7 @@ const FridgesContainer = (props) => {
   return (
     <Grid columns={3} stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Row>
-        <Grid.Column style={{ maxWidth: '100vh'}}>
+        <Grid.Column style={{ maxWidth: '100vh' }}>
           <Card.Group centered>
             {displayFridges()}
           </Card.Group>

@@ -6,8 +6,7 @@ export default {
   // FOOD_ITEMS_URL: 'https://grasher-food-tracker-backend.herokuapp.com/food_items',
   BASE_API_URL: 'http://localhost:3000',
   USER_LOGIN_URL: '/user_auth',
-  FRIDGES_URL: '/users/:id/fridges',
-  FOOD_ITEMS_URL: '/fridges/:id/food_items',
+  //FOOD_ITEMS_URL: '/fridges/:id/food_items',
   SPOONACULAR_HEADER: 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
   SPOONACULAR_URL: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
   FOOD_OPTIONS: [
