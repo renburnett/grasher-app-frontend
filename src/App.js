@@ -45,6 +45,7 @@ const App = () => {
       CONSTANTS.BASE_API_URL + `/users/${userId}/fridges`,
       { headers: axiosConfig },
     );
+    console.log('URL', CONSTANTS.BASE_API_URL)
     console.log(response)
     return response;
   }
