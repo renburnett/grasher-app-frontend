@@ -1,6 +1,6 @@
 import React from 'react';
 import useGlobal from './util/store';
-import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Redirect, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import FridgeDetail from './pages/FridgeDetail';
@@ -35,6 +35,7 @@ const App = () => {
   }
 
   const fetchCurrentUsersFridges = async (userId, jwt) => {
+    console.log('jwt', jwt)
     const axiosConfig = {
       Accept: 'application/json',
       Authorization: `Bearer ${jwt}`,
@@ -42,8 +43,9 @@ const App = () => {
     };
     const response = await axios.get(
       CONSTANTS.BASE_API_URL + `/users/${userId}/fridges`,
-      axiosConfig,
+      { headers: axiosConfig },
     );
+    console.log(response)
     return response;
   }
 
@@ -86,8 +88,8 @@ const App = () => {
 
     actions.setCurrentUser(null);
     actions.setJwt(null)
-    actions.setCurrentUsersFridges([]);
     actions.setCurrentFridge(null);
+    actions.setCurrentUsersFridges([]);
   }
   return (
     <div className="App">
@@ -95,11 +97,13 @@ const App = () => {
         <Navbar handleLogout={handleLogout} />
         <Route exact path='/' render={() => <FridgesContainer fetchUsersFridges={state.fetchUsersFridges} fridgesReady={state.currentUsersFridges.length > 0} currentUsersFridges={state.currentUsersFridges} loggedIn={state.currentUser} />} />
         <Route exact path='/fridges' render={props => <FridgesContainer {...props} fridgesReady={state.currentUsersFridges.length > 0} currentUsersFridges={state.currentUsersFridges} loggedIn={state.currentUser} />} />
-        <Route exact path='login'>
-          {state.currentUser ? <Redirect to='/fridges' /> : props => <Login {...props} handleLoginSubmit={(props) => handleLoginSubmit(props, state)} handleLoginChange={handleLoginChange} email={state.email} password={state.password} currentUser={state.currentUser} />}
-        </Route>
-        <Route exact path='/account' render={props => <Account {...props} updateCurrentUser={updateCurrentUser} loggedIn={state.currentUser} currentUser={state.currentUser} />} />
-        <Route exact path='/signup' render={props => <Signup {...props} updateCurrentUser={updateCurrentUser} />} />
+        <Switch>
+          <Route path='/login'>
+            {state.currentUser ? <Redirect to='/fridges' /> : props => <Login {...props} handleLoginSubmit={(props) => handleLoginSubmit(props, state)} handleLoginChange={handleLoginChange} email={state.email} password={state.password} currentUser={state.currentUser} />}
+          </Route>
+          <Route path='/signup' render={props => <Signup {...props} setUserAndJwtToLocalStorage={setUserAndJwtToLocalStorage} />} />
+        </Switch>
+        <Route exact path='/account' render={props => <Account {...props} setUserAndJwtToLocalStorage={setUserAndJwtToLocalStorage} loggedIn={state.currentUser} />} />
         <Route exact path='/new_fridge' render={props => <NewFridgeForm {...props} />} />
         <Route
           path='/fridges/:fridge_id'
