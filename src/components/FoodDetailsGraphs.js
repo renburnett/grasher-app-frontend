@@ -7,7 +7,7 @@ import RecipeApiFetcher from './RecipeApiFetcher';
 const FoodDetailsGraphs = (props) => {
 
   const calculateTotalFoodAndDrink = () => {
-    const totalFoodAndDrink = {foodCount: 0, drinkCount: 0};
+    const totalFoodAndDrink = { foodCount: 0, drinkCount: 0 };
     props.currentFridge.food_items.forEach((food) => {
       if (food.is_drink === true) {
         totalFoodAndDrink.drinkCount += food.quantity;
@@ -22,24 +22,24 @@ const FoodDetailsGraphs = (props) => {
 
   const populateBarChart = () => {
     return props.currentFridge.food_items.map((foodItem) => {
-      return {x: foodItem.name, y: props.calculateTimeUntilExpiry(foodItem.expiration_date)}
+      return { x: foodItem.name, y: props.calculateTimeUntilExpiry(foodItem.expiration_date) }
     })
   }
 
   const populatePieChart = () => {
     return props.currentFridge.food_items.map((foodItem) => {
-      return {x: foodItem.name, y: foodItem.quantity}
+      return { x: foodItem.name, y: foodItem.quantity }
     })
   }
 
   return (
-    <Card style={{minWidth: '50%'}}>
+    <Card style={{ minWidth: '50%' }}>
       <Card.Content>
         <Segment>
           <Header as="h3">Breakdown of Consumables</Header>
           <Divider />
           <VictoryChart domainPadding={30}>
-            <VictoryLabel text="Days Left Until Expiration" x={225} y={30} textAnchor="middle"/>
+            <VictoryLabel text="Days Left Until Expiration" x={225} y={30} textAnchor="middle" />
             <VictoryBar
               animate={{ onLoad: { duration: 1000 } }}
               style={{ data: { fill: "#007AD9" }, labels: { fontSize: 14 } }}
@@ -47,33 +47,33 @@ const FoodDetailsGraphs = (props) => {
             />
           </VictoryChart>
           <VictoryPie
-            padding={{left: 80, right: 80, top: 15, bottom: 15}}
+            padding={{ left: 80, right: 80, top: 15, bottom: 15 }}
             colorScale={CONSTANTS.COLOR_ARRAY}
             style={{ labels: { fontSize: 14 } }}
             innerRadius={70}
             data={populatePieChart()}
           />
         </Segment>
-        <br/>
+        <br />
         <Statistic.Group widths='two'>
           <Statistic>
-            <Statistic.Value> {calculateTotalFoodAndDrink().drinkCount} / { props.currentFridge.drink_capacity }</Statistic.Value>
+            <Statistic.Value> {calculateTotalFoodAndDrink().drinkCount} / {props.currentFridge.drink_capacity}</Statistic.Value>
             <Statistic.Label>Drink Capacity</Statistic.Label>
           </Statistic>
           <Statistic>
-            <Statistic.Value>{calculateTotalFoodAndDrink().foodCount} / { props.currentFridge.food_capacity }</Statistic.Value>
+            <Statistic.Value>{calculateTotalFoodAndDrink().foodCount} / {props.currentFridge.food_capacity}</Statistic.Value>
             <Statistic.Label>Food Capacity</Statistic.Label>
           </Statistic>
         </Statistic.Group>
-        <RecipeApiFetcher 
+        <RecipeApiFetcher
           getRecipesForFoodItemsNearExpiry={props.getRecipesForFoodItemsNearExpiry}
           recipes={props.recipes}
         />
       </Card.Content>
       <Card.Content extra>
-      Location: Seattle, WA    
+        Location: Seattle, WA
       {/* TODO: or pull from user? stretch (Add locator) */}
-    </Card.Content>
+      </Card.Content>
     </Card>
   );
 }

@@ -24,7 +24,6 @@ const FridgesContainer = (props) => {
   }
 
   const displayFridges = () => {
-    console.log('state.currentUsersFridges', state.currentUsersFridges)
     return state.currentUsersFridges.map((fridge, idx) => {
       return <Fridge handleFridgeDelete={handleFridgeDelete} fridge={fridge} key={fridge.id} idx={idx} />
     })
