@@ -52,8 +52,6 @@ const App = () => {
   }
 
   const handleLoginSubmit = async ({ history }, { email, password }) => {
-    console.log('process.env.NODE_ENV', process.env);
-
     try {
       const { data } = await axios.post(
         CONSTANTS.BASE_API_URL + CONSTANTS.USER_LOGIN_URL,
