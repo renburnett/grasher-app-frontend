@@ -25,6 +25,7 @@ const Account = (props) => {
   const handleNewUserFormSubmit = async () => {
     //TODO: validate that user form fully filled out
     //TODO: VALIDATIONS!!!!!!!!!!!!!
+    console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
     try {
       const response = await axios.patch(

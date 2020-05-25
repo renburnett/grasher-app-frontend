@@ -3,7 +3,7 @@ export default {
   BASE_API_URL: process.env.NODE_ENV === 'production' ? 'https://grasher-food-tracker-backend.herokuapp.com' : 'http://localhost:3000',
   USER_LOGIN_URL: '/user_auth',
   USER_CREATE_URL: '/users/create',
-  USER_UPDATE_URL: (userId) => `/users/${userId}/update`,
+  USER_UPDATE_URL: userId => `/users/${userId}/update`,
   SPOONACULAR_HEADER: 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
   SPOONACULAR_URL: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
   FOOD_OPTIONS: [
