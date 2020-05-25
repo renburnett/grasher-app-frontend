@@ -31,7 +31,6 @@ const Account = (props) => {
         CONSTANTS.BASE_API_URL + CONSTANTS.USER_UPDATE_URL(currentUser.id),
         { user: newUser, jwt: state.jwt },
       );
-      console.log(response.data);
       const { user } = response.data;
 
       await actions.setCurrentUser(user);

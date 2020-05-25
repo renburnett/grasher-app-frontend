@@ -19,7 +19,6 @@ const Signup = (props) => {
         CONSTANTS.BASE_API_URL + CONSTANTS.USER_CREATE_URL,
         { user: newUser },
       );
-      console.log(response.data);
       const { user, jwt } = response.data;
 
       await actions.setCurrentUser(user);

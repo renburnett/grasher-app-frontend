@@ -8,9 +8,7 @@ const NewFridgeForm = (props) => {
   const [state, actions] = useGlobal();
 
   const handleFridgeFormChange = (e, { name, value }) => {
-    console.log({ ...state.newFridge, [name]: value })
     actions.setNewFridge({ ...state.newFridge, [name]: value })
-    console.log(state.newFridge);
   }
 
   const handleFridgeFormSubmit = async () => {
