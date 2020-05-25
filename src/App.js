@@ -29,11 +29,6 @@ const App = () => {
     localStorage.setItem('currentUsersFridges', JSON.stringify(fridges));
   }
 
-  const updateCurrentUser = (user) => {
-    setUserAndJwtToLocalStorage(user);
-    actions.setCurrentUser(user);
-  }
-
   const fetchCurrentUsersFridges = async (userId, jwt) => {
     const axiosConfig = {
       Accept: 'application/json',
@@ -89,6 +84,7 @@ const App = () => {
     actions.setCurrentFridge(null);
     actions.setCurrentUsersFridges([]);
   }
+
   return (
     <div className="App">
       <Router>
