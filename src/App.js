@@ -35,7 +35,6 @@ const App = () => {
   }
 
   const fetchCurrentUsersFridges = async (userId, jwt) => {
-    console.log('jwt', jwt)
     const axiosConfig = {
       Accept: 'application/json',
       Authorization: `Bearer ${jwt}`,
@@ -45,9 +44,7 @@ const App = () => {
       CONSTANTS.BASE_API_URL + `/users/${userId}/fridges`,
       { headers: axiosConfig },
     );
-    console.log('ENV', process.env.NODE_ENV)
 
-    console.log(response)
     return response;
   }
 
@@ -65,7 +62,6 @@ const App = () => {
         CONSTANTS.BASE_API_URL + CONSTANTS.USER_LOGIN_URL,
         { user: { email, password } },
       );
-      console.log(data);
       const { user, jwt } = data;
 
       setUserAndJwtToLocalStorage(user, jwt);
