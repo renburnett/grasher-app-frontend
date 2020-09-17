@@ -1,7 +1,7 @@
 
 export default {
-  // BASE_API_URL: process.env.NODE_ENV === 'production' ? 'https://grasher-food-tracker-backend.herokuapp.com' : 'http://localhost:3000',
-  BASE_API_URL: 'https://grasher-food-tracker-backend.herokuapp.com',
+  // BASE_API_URL: 'http://localhost:3000',
+  BASE_API_URL: 'https://grasher-food-tracker-backend.herokuapp.com', 
   USER_LOGIN_URL: '/user_auth',
   USER_CREATE_URL: '/users/create',
   USER_UPDATE_URL: userId => `/users/${userId}/update`,

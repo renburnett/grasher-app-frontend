@@ -25,7 +25,7 @@ class FoodTypesGraph extends Component {
       foodGroups["fruit"] = food_items.filter(food => food.food_type === "fruit");
       foodGroups["processed"] = food_items.filter(food => food.food_type === "processed");
       foodGroups["dairy"] = food_items.filter(food => food.food_type === "dairy");
-      
+
       for (const food of Object.entries(foodGroups)) {
         if (food[1].length > 0) {
           processedData.push({

@@ -42,6 +42,8 @@ const FridgeDetail = (props) => {
     const fridgeCapacity = isCurrentFridgeFoodOrDrinkFull();
     const newFood_quantity = Number(state.newFood.quantity);
 
+    console.log('newFood', state.newFood)
+
     const config = {
       method: 'POST',
       headers: {
@@ -53,7 +55,7 @@ const FridgeDetail = (props) => {
     //check to ensure the newly submitted item wont go over our fridges food capacity
     if (state.newFood.is_drink) {
       if ((!fridgeCapacity.drink.full) && (fridgeCapacity.drink.total + newFood_quantity) <= state.currentFridge.drink_capacity) {
-        fetch(CONSTANTS.FOOD_ITEMS_URL, config)
+        fetch(CONSTANTS.BASE_API_URL + `food_items/${state.newFood}`, config)
           .then(res => res.json())
           .then(foodItem => addFoodToCurrentFridge(foodItem))
       } else {

@@ -11,7 +11,6 @@ const Signup = (props) => {
   const [newUser, setNewUser] = useState({ username: '', email: '', password: '', phone_number: '', budget: '' });
 
   const handleNewUserFormSubmit = async () => {
-    //TODO: validate that user form fully filled out
     //TODO: VALIDATIONS!!!!!!!!!!!!!
 
     try {
