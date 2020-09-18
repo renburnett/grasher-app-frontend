@@ -12,10 +12,10 @@ import CONSTANTS from './constants';
 import axios from 'axios';
 require('dotenv').config();
 
-//TODO: MODAL ON FRIDGE DETAIL PAGE TO TELL WHEN EXXPIRED
-//TODO: azure function that fires daily to seed rails db
-//TODO: If its open calculate new dates (open boolean) (data source?)
-//Twilio API to send alert to phone for expiring food
+// TODO: MODAL ON FRIDGE DETAIL PAGE TO TELL WHEN EXXPIRED
+// TODO: azure function that fires daily to seed rails db
+// TODO: If its open calculate new dates (open boolean) (data source?)
+// Twilio API to send alert to phone for expiring food
 
 const App = () => {
   const [state, actions] = useGlobal();
@@ -69,7 +69,7 @@ const App = () => {
 
       await history.push('/');
     } catch (error) {
-      console.log('Errrrror:', error);
+      console.log('Login Error: ', error);
     }
   }
 

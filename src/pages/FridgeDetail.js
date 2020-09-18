@@ -42,30 +42,31 @@ const FridgeDetail = (props) => {
     const fridgeCapacity = isCurrentFridgeFoodOrDrinkFull();
     const newFood_quantity = Number(state.newFood.quantity);
 
-    console.log('newFood', state.newFood)
+    console.log('newFood', state.newFood.fridge_id = state.currentFridge.id)
 
     const config = {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.jwt}`,
       },
       body: JSON.stringify(state.newFood),
     }
     //check to ensure the newly submitted item wont go over our fridges food capacity
     if (state.newFood.is_drink) {
       if ((!fridgeCapacity.drink.full) && (fridgeCapacity.drink.total + newFood_quantity) <= state.currentFridge.drink_capacity) {
-        fetch(CONSTANTS.BASE_API_URL + `food_items/${state.newFood}`, config)
+        fetch(CONSTANTS.BASE_API_URL + "/food_items/create", config)
           .then(res => res.json())
-          .then(foodItem => addFoodToCurrentFridge(foodItem))
+          .then(({food_item}) => addFoodToCurrentFridge(food_item))
       } else {
         console.log("ERROR: Current fridge is at capacity")
       }
     } else if (!state.newFood.is_drink) {
       if ((!fridgeCapacity.food.full) && (fridgeCapacity.food.total + newFood_quantity) <= state.currentFridge.food_capacity) {
-        fetch(CONSTANTS.FOOD_ITEMS_URL, config)
+        fetch(CONSTANTS.BASE_API_URL + "/food_items/create", config)
           .then(res => res.json())
-          .then(foodItem => addFoodToCurrentFridge(foodItem))
+          .then(({food_item}) => addFoodToCurrentFridge(food_item))
       } else {
         console.log("ERROR: Current fridge is at capacity")
       }
@@ -86,7 +87,7 @@ const FridgeDetail = (props) => {
   }
 
   const addFoodToCurrentFridge = (foodItem) => {
-    actions.setCurrentFridge({ ...state.currentFridge, food_items: [...state.currentFridge.food_items, foodItem] }); //TODO: check syntax
+    actions.setCurrentFridge({ ...state.currentFridge, food_items: [...state.currentFridge.food_items, foodItem] });
   }
 
   const removeFoodFromCurrentFridge = (foodItem) => {
@@ -98,7 +99,7 @@ const FridgeDetail = (props) => {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
     }
     fetch(CONSTANTS.FOOD_ITEMS_URL + '/' + foodItem.id, config)

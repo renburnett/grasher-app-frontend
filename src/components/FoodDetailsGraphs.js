@@ -15,6 +15,7 @@ const FoodDetailsGraphs = (props) => {
         totalFoodAndDrink.foodCount += food.quantity;
       } else {
         console.log('possible error on `foodItem.is_drink` property')
+        console.log(food)
       }
     })
     return totalFoodAndDrink;
