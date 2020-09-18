@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Header, Grid, Segment } from 'semantic-ui-react';
+import { Form, Header, Grid, Segment, Image } from 'semantic-ui-react';
 import useGlobal from '../util/store';
 import CONSTANTS from '../constants';
 import SecurityHOC from '../HOCs/SecurityHOC';
+import new_fridge from '../images/new_fridge.png';
 
 const NewFridgeForm = (props) => {
   const [state, actions] = useGlobal();
@@ -30,8 +31,10 @@ const NewFridgeForm = (props) => {
     <Grid stackable textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
       <Grid.Column style={{ maxWidth: '75vh' }}>
         <Segment>
+        <Image src={new_fridge} fluid />
+        <br/>
           <Form onSubmit={handleFridgeFormSubmit} size="mini">
-            <Header>New Fridge:</Header>
+            <Header>Add New Fridge:</Header>
             <Form.Input
               onChange={handleFridgeFormChange}
               name="name"
