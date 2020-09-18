@@ -88,10 +88,12 @@ const FridgeDetail = (props) => {
 
   const addFoodToCurrentFridge = (foodItem) => {
     actions.setCurrentFridge({ ...state.currentFridge, food_items: [...state.currentFridge.food_items, foodItem] });
+    localStorage.setItem('currentFridge', JSON.stringify({ ...state.currentFridge, food_items: [...state.currentFridge.food_items, foodItem] }));
   }
 
   const removeFoodFromCurrentFridge = (foodItem) => {
     actions.setCurrentFridge({ ...state.currentFridge, food_items: state.currentFridge.food_items.filter(food => food.id !== foodItem.id) });
+    localStorage.setItem('currentFridge', JSON.stringify({ ...state.currentFridge, food_items: state.currentFridge.food_items.filter(food => food.id !== foodItem.id) }));
   }
 
   const handleFoodItemDelete = (e, foodItem) => {
@@ -100,10 +102,11 @@ const FridgeDetail = (props) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.jwt}`,
       },
     }
-    fetch(CONSTANTS.FOOD_ITEMS_URL + '/' + foodItem.id, config)
-      .then(removeFoodFromCurrentFridge(foodItem))
+    fetch(CONSTANTS.BASE_API_URL + `/food_items/${foodItem.id}/delete`, config)
+    .then(removeFoodFromCurrentFridge(foodItem))
   }
 
   const calculateTimeUntilExpiry = (expiryDate, inDays = true) => {
