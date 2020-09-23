@@ -6,6 +6,7 @@ import SecurityHOC from '../HOCs/SecurityHOC';
 import new_fridge from '../images/new_fridge.png';
 
 const NewFridgeForm = (props) => {
+  const { FRIDGE_CREATE_URL, BASE_API_URL } = CONSTANTS;
   const [state, actions] = useGlobal();
 
   const handleFridgeFormChange = (e, { name, value }) => {
@@ -17,14 +18,22 @@ const NewFridgeForm = (props) => {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.jwt}`,
       },
       body: JSON.stringify({ ...state.newFridge, user_id: state.currentUser.id }),
     }
 
-    const res = await fetch(CONSTANTS.FRIDGES_URL, config);
+    const res = await fetch(BASE_API_URL + FRIDGE_CREATE_URL, config);
     const fridge = await res.json();
-    actions.setCurrentUsersFridges([...state.currentUsersFridges, fridge])
+    
+    if (fridge) {
+      actions.setCurrentUsersFridges([...state.currentUsersFridges, fridge]);
+      localStorage.setItem('currentUsersFridges', JSON.stringify([...state.currentUsersFridges, fridge]));
+      await props.history.push('/'); 
+    } else {
+      console.log("Error: failed to create fridge, please try again.")
+    }
   }
 
   return (

@@ -36,13 +36,16 @@ const Fridge = (props) => {
 
   const calculateAmountOfFoodExpiringIn48Hrs = () => {
     let expiringFood = 0;
-    props.fridge.food_items.forEach((food) => {
-      if (foodExpiringIn48Hrs(food.expiration_date)) {
-        expiringFood += 1;
-      }
-    })
-    const percentage = Math.round((expiringFood / props.fridge.food_items.length) * 100);
-    return percentage;
+    if (props.fridge.food_items.length > 0) {
+      props.fridge.food_items.forEach((food) => {
+        if (foodExpiringIn48Hrs(food.expiration_date)) {
+          expiringFood += 1;
+        }
+      })
+      const percentage = Math.round((expiringFood / props.fridge.food_items.length) * 100);
+      return percentage;
+    }
+    return 0;
   }
 
   const setCurrentFridgeToLocalStorage = (currentFridge) => {

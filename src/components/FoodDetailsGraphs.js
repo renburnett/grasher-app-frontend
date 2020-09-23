@@ -3,6 +3,7 @@ import { VictoryBar, VictoryChart, VictoryPie, VictoryLabel } from 'victory';
 import CONSTANTS from '../constants';
 import { Card, Header, Divider, Segment, Statistic } from 'semantic-ui-react';
 import RecipeApiFetcher from './RecipeApiFetcher';
+let moment = require('moment');
 
 const FoodDetailsGraphs = (props) => {
 
@@ -21,9 +22,27 @@ const FoodDetailsGraphs = (props) => {
     return totalFoodAndDrink;
   }
 
+  const calculateTimeUntilExpiry = (expiryDate, inDays = true) => {
+    const now = moment();
+    const expiry = moment(expiryDate);
+    if (inDays === true) {
+      const timeTilExpiry = moment.duration(expiry.diff(now)).asDays();
+      if (timeTilExpiry < 0)
+        return 0;
+      else
+        return timeTilExpiry;
+    } else {
+      const timeTilExpiry = moment.duration(expiry.diff(now)).asHours();
+      if (timeTilExpiry < 0)
+        return 0;
+      else
+        return timeTilExpiry;
+    }
+  }
+
   const populateBarChart = () => {
     return props.currentFridge.food_items.map((foodItem) => {
-      return { x: foodItem.name, y: props.calculateTimeUntilExpiry(foodItem.expiration_date) }
+      return { x: foodItem.name, y: calculateTimeUntilExpiry(foodItem.expiration_date) }
     })
   }
 
@@ -69,11 +88,11 @@ const FoodDetailsGraphs = (props) => {
         <RecipeApiFetcher
           getRecipesForFoodItemsNearExpiry={props.getRecipesForFoodItemsNearExpiry}
           recipes={props.recipes}
-        />
+        /> 
       </Card.Content>
       <Card.Content extra>
         Location: Seattle, WA
-      {/* TODO: or pull from user? stretch (Add locator) */}
+      {/* TODO: pull from user? or add locator */}
       </Card.Content>
     </Card>
   );

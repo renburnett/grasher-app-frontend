@@ -6,9 +6,9 @@ import FoodDetailsForm from '../components/FoodDetailsForm';
 import FoodDetailsGraphs from '../components/FoodDetailsGraphs';
 import { Card, Grid } from 'semantic-ui-react';
 import CONSTANTS from '../constants';
-let moment = require('moment');
 
 const FridgeDetail = (props) => {
+  const { BASE_API_URL, FOOD_DELETE_URL, SPOONACULAR_URL, SPOONACULAR_HEADER } = CONSTANTS;
   const [state, actions] = useGlobal();
 
   //food item add form handlers / helpers
@@ -42,8 +42,6 @@ const FridgeDetail = (props) => {
     const fridgeCapacity = isCurrentFridgeFoodOrDrinkFull();
     const newFood_quantity = Number(state.newFood.quantity);
 
-    console.log('newFood', state.newFood.fridge_id = state.currentFridge.id)
-
     const config = {
       method: 'POST',
       headers: {
@@ -53,10 +51,11 @@ const FridgeDetail = (props) => {
       },
       body: JSON.stringify(state.newFood),
     }
+    // TODO: UPDATE state.  so the recipe fetch button toggles properly
     //check to ensure the newly submitted item wont go over our fridges food capacity
     if (state.newFood.is_drink) {
       if ((!fridgeCapacity.drink.full) && (fridgeCapacity.drink.total + newFood_quantity) <= state.currentFridge.drink_capacity) {
-        fetch(CONSTANTS.BASE_API_URL + "/food_items/create", config)
+        fetch(BASE_API_URL + "/food_items/create", config)
           .then(res => res.json())
           .then(({food_item}) => addFoodToCurrentFridge(food_item))
       } else {
@@ -64,7 +63,7 @@ const FridgeDetail = (props) => {
       }
     } else if (!state.newFood.is_drink) {
       if ((!fridgeCapacity.food.full) && (fridgeCapacity.food.total + newFood_quantity) <= state.currentFridge.food_capacity) {
-        fetch(CONSTANTS.BASE_API_URL + "/food_items/create", config)
+        fetch(BASE_API_URL + "/food_items/create", config)
           .then(res => res.json())
           .then(({food_item}) => addFoodToCurrentFridge(food_item))
       } else {
@@ -88,6 +87,7 @@ const FridgeDetail = (props) => {
 
   const addFoodToCurrentFridge = (foodItem) => {
     actions.setCurrentFridge({ ...state.currentFridge, food_items: [...state.currentFridge.food_items, foodItem] });
+    setCurrentFoodItemsNearExpiry();
     localStorage.setItem('currentFridge', JSON.stringify({ ...state.currentFridge, food_items: [...state.currentFridge.food_items, foodItem] }));
   }
 
@@ -105,35 +105,46 @@ const FridgeDetail = (props) => {
         'Authorization': `Bearer ${state.jwt}`,
       },
     }
-    fetch(CONSTANTS.BASE_API_URL + `/food_items/${foodItem.id}/delete`, config)
+    fetch(BASE_API_URL + FOOD_DELETE_URL(foodItem.id), config)
     .then(removeFoodFromCurrentFridge(foodItem))
   }
 
-  const calculateTimeUntilExpiry = (expiryDate, inDays = true) => {
-    const now = moment();
-    const expiry = moment(expiryDate);
-    if (inDays === true) {
-      const timeTilExpiry = moment.duration(expiry.diff(now)).asDays();
-      if (timeTilExpiry < 0)
-        return 0;
-      else
-        return timeTilExpiry;
-    } else {
-      const timeTilExpiry = moment.duration(expiry.diff(now)).asHours();
-      if (timeTilExpiry < 0)
-        return 0;
-      else
-        return timeTilExpiry;
+  const checkFoodItemsNearExpiry = async ( foodItem ) => {
+    const config = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.jwt}`,
+      },
     }
+
+    const response = await fetch(BASE_API_URL + `/food_items/${foodItem.id}/check_if_expiring`, config);
+    const expiringIn48h = await response.json();
+    console.log(expiringIn48h)
+    return expiringIn48h;
   }
 
-  const getRecipesForFoodItemsNearExpiry = () => {
-    const foodItemsNearExpiry = state.currentFridge.food_items
-      .filter(foodItem => calculateTimeUntilExpiry(foodItem.expiration_date, false) <= 48)
-      .map(foodItem => foodItem.name)
-      .join(',');
-    actions.setFoodItemsExpiringIn48Hrs(foodItemsNearExpiry);
-    fetchRecipes();
+  const setCurrentFoodItemsNearExpiry = async () => {
+    // TODO: return ONLY items within 48h of expiration
+    return await Promise.all(state.currentFridge.food_items.filter((foodItem) => {
+      if (checkFoodItemsNearExpiry(foodItem)) {
+        foodItem.expires_in_48h = true;
+        return true;
+      }
+      return false;
+    }));
+  }
+
+  const getRecipesForFoodItemsNearExpiry = async () => {
+    const expiringFoodItems = await setCurrentFoodItemsNearExpiry();
+    if (expiringFoodItems.length === 0) {
+      console.log("Error: No food items are currently near expiration.");
+      alert("Error: No food items are currently near expiration.");
+    } else {
+      const foodNameString = expiringFoodItems.map(foodItem => foodItem.name).join(',');
+      fetchRecipes(3, foodNameString);
+    }
   }
 
   const displayFoodItems = () => {
@@ -142,19 +153,18 @@ const FridgeDetail = (props) => {
     })
   }
 
-  const fetchRecipes = (numOfRecipes = 3) => {
+  const fetchRecipes = async (numOfRecipes = 3, foodNameString) => {
     const config = {
       "method": "GET",
       "headers": {
-        "x-rapidapi-host": CONSTANTS.SPOONACULAR_HEADER,
+        "x-rapidapi-host": SPOONACULAR_HEADER,
         "x-rapidapi-key": process.env.REACT_APP_SPOONACULAR_KEY
       }
     }
 
-    fetch(CONSTANTS.SPOONACULAR_URL + `/recipes/findByIngredients?ingredients=${state.foodItemsExpiringIn48Hrs}&number=${numOfRecipes}`, config)
-      .then(res => res.json())
-      .then(recipes => actions.setRecipes(recipes))
-      .catch(error => console.log(error))
+    const res = await fetch(SPOONACULAR_URL + `/recipes/findByIngredients?ingredients=${foodNameString}&number=${numOfRecipes}`, config);
+    const recipes = await res.json();
+    await actions.setRecipes(recipes);
   }
 
   const displayFridge = () => {
@@ -167,7 +177,6 @@ const FridgeDetail = (props) => {
         />
         <FoodDetailsGraphs
           currentFridge={state.currentFridge}
-          calculateTimeUntilExpiry={calculateTimeUntilExpiry}
           getRecipesForFoodItemsNearExpiry={getRecipesForFoodItemsNearExpiry}
           recipes={state.recipes}
         />

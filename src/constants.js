@@ -1,10 +1,13 @@
 
 export default {
-  // BASE_API_URL: 'http://localhost:3000',
-  BASE_API_URL: 'https://grasher-food-tracker-backend.herokuapp.com', 
+  BASE_API_URL: 'http://localhost:3000',
+  // BASE_API_URL: 'https://grasher-food-tracker-backend.herokuapp.com',
   USER_LOGIN_URL: '/user_auth',
   USER_CREATE_URL: '/users/create',
   USER_UPDATE_URL: userId => `/users/${userId}/update`,
+  FRIDGE_CREATE_URL: '/fridges/create',
+  FRIDGE_DELETE_URL: fridgeId => `/fridges/${fridgeId}/delete`,
+  FOOD_DELETE_URL: foodItemId => `/food_items/${foodItemId}/delete`,
   SPOONACULAR_HEADER: 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
   SPOONACULAR_URL: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
   FOOD_OPTIONS: [

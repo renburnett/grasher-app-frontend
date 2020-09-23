@@ -13,17 +13,17 @@ const RecipeApiFetcher = (props) => {
       <Grid columns={2} stackable >
         <Grid.Row verticalAlign='middle'>
           <Grid.Column>
-            <Header as="h4" color="blue">Browse recipes for food nearing expiration:</Header>
+            <Header as="h4" color="blue">Browse recipes:</Header>
           </Grid.Column>
           <Grid.Column>
-            <Modal trigger={
+              <Modal trigger={
               <Button onClick={props.getRecipesForFoodItemsNearExpiry} size="big" animated>
                 <Button.Content visible>Get Recipes</Button.Content>
                 <Button.Content hidden>
                   <Icon name='arrow right' />
                 </Button.Content>
               </Button>
-            }>
+              }>
               {!(props.recipes.length > 0) ? <Dimmer active inverted> <Loader /> </Dimmer> : null}
               <Modal.Header>Recipe Ideas</Modal.Header>
               <Modal.Content image>

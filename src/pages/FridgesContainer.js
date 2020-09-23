@@ -6,21 +6,23 @@ import useGlobal from '../util/store';
 import CONSTANTS from '../constants';
 
 const FridgesContainer = (props) => {
+  const { BASE_API_URL, FRIDGE_DELETE_URL } = CONSTANTS;
   const [state, actions] = useGlobal();
 
   const handleFridgeDelete = async (e, { fridge_id }) => {
-    //TODO: fix this!!!!!!!!!!
     const config = {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.jwt}`,
       },
     }
-    const res = await fetch(CONSTANTS.FRIDGES_URL + '/' + fridge_id, config);
-    const fridgeId = await res.json().id;
-    actions.setCurrentUsersFridges(state.currentUsersFridges.filter(fridge => fridge.id !== fridgeId));
-    props.setUsersFridgesToLocalStorage(state.currentUsersFridges);
+    const res = await fetch(BASE_API_URL + FRIDGE_DELETE_URL(fridge_id), config);
+    const { id } = await res.json();
+
+    actions.setCurrentUsersFridges(state.currentUsersFridges.filter(fridge => fridge.id !== id));
+    localStorage.setItem('currentUsersFridges', JSON.stringify(state.currentUsersFridges.filter(fridge => fridge.id !== id)));
   }
 
   const displayFridges = () => {
@@ -34,7 +36,7 @@ const FridgesContainer = (props) => {
       <Grid.Row>
         <Grid.Column style={{ maxWidth: '100vh' }}>
           <Card.Group centered>
-            {displayFridges()}
+            {state.currentUsersFridges.length > 0 ? displayFridges() : null}
           </Card.Group>
         </Grid.Column>
       </Grid.Row>

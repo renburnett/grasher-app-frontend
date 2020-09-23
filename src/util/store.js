@@ -18,14 +18,11 @@ const actions = {
   setCurrentFridge: (store, newCurrentFridge) => {
     store.setState({ currentFridge: newCurrentFridge });
   },
-  setNewFridge: (store, newFridge) => {
-    store.setState({ email: newFridge });
+  setNewFridge: (store, newNewFridge) => {
+    store.setState({ newFridge: newNewFridge });
   },
   setCurrentUsersFridges: (store, newCurrentUsersFridges) => {
     store.setState({ currentUsersFridges: newCurrentUsersFridges });
-  },
-  setFoodItemsExpiringIn48Hrs: (store, newFoodItemsExpiringIn48Hrs) => {
-    store.setState({ foodItemsExpiringIn48Hrs: newFoodItemsExpiringIn48Hrs });
   },
   setRecipes: (store, newRecipes) => {
     store.setState({ recipes: newRecipes });
