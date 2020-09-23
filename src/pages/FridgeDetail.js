@@ -121,7 +121,7 @@ const FridgeDetail = (props) => {
 
     const response = await fetch(BASE_API_URL + `/food_items/${foodItem.id}/check_if_expiring`, config);
     const expiringIn48h = await response.json();
-    console.log(expiringIn48h)
+    console.log('expiringIn48h', expiringIn48h)
     return expiringIn48h;
   }
 
