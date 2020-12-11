@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Icon, Segment, Header, Grid, Modal, Item, Dimmer, Loader } from 'semantic-ui-react';
 import Recipe from '../components/Recipe';
+import RecipeCheckBox from '../components/RecipeCheckBox';
 
 const RecipeApiFetcher = (props) => {
 
@@ -13,7 +14,8 @@ const RecipeApiFetcher = (props) => {
       <Grid columns={2} stackable >
         <Grid.Row verticalAlign='middle'>
           <Grid.Column>
-            <Header as="h4" color="blue">Browse recipes:</Header>
+            <Header as="h3" color="blue">Browse Recipes:</Header>
+            <RecipeCheckBox foodItems={props.foodItems}/>
           </Grid.Column>
           <Grid.Column>
               <Modal trigger={
