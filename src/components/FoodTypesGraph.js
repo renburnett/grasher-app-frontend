@@ -6,6 +6,7 @@ class FoodTypesGraph extends Component {
   state = {
     graphData: [
       { x: "vegetable", y: 0 },
+      { x: "grain", y: 0 },
       { x: "meat", y: 0 },
       { x: "fruit", y: 0 },
       { x: "processed", y: 0 },
@@ -21,6 +22,7 @@ class FoodTypesGraph extends Component {
       const processedData = [];
 
       foodGroups["vegetable"] = food_items.filter(food => food.food_type === "vegetable");
+      foodGroups["grain"] = food_items.filter(food => food.food_type === "grain");
       foodGroups["meat"] = food_items.filter(food => food.food_type === "meat");
       foodGroups["fruit"] = food_items.filter(food => food.food_type === "fruit");
       foodGroups["processed"] = food_items.filter(food => food.food_type === "processed");

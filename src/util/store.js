@@ -1,6 +1,6 @@
-import React from 'react';
-import useGlobalHook from 'use-global-hook';
-import initialState from './initalState';
+import React from "react";
+import useGlobalHook from "use-global-hook";
+import initialState from "./initalState";
 
 const actions = {
   setJwt: (store, newJwt) => {
@@ -27,12 +27,14 @@ const actions = {
   setRecipes: (store, newRecipes) => {
     store.setState({ recipes: newRecipes });
   },
+  setCheckedFood: (store, newCheckedFood) => {
+    store.setState({ checkedFood: newCheckedFood });
+  },
   setNewFood: (store, newNewFood) => {
     store.setState({ newFood: newNewFood });
   },
-}
+};
 
 const useGlobal = useGlobalHook(React, initialState, actions);
 
 export default useGlobal;
-
