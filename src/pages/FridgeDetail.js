@@ -215,6 +215,7 @@ const FridgeDetail = (props) => {
     );
     const recipes = await res.json();
     await actions.setRecipes(recipes);
+    actions.setCheckedFood([]);
   };
 
   const displayFridge = () => {
